@@ -10,10 +10,11 @@
           <i class="fas fa-bars"></i>
         </button>
         <ul class="nav-links" :class="{ open: isNavOpen }">
-          <li><a href="#sobre" @click.prevent="scrollTo('sobre'); isNavOpen = false">Sobre</a></li>
-          <li><a href="#equipe" @click.prevent="scrollTo('equipe'); isNavOpen = false">Equipe</a></li>
-          <li><a href="#areas" @click.prevent="scrollTo('areas'); isNavOpen = false">Áreas de Atuação</a></li>
-          <li><a href="#contato" @click.prevent="scrollTo('contato'); isNavOpen = false">Contato</a></li>
+          <li><a href="#sobre" @click.prevent="scrollTo('sobre'); isNavOpen = false">SOBRE</a></li>
+          <li><a href="#equipe" @click.prevent="scrollTo('equipe'); isNavOpen = false">EQUIPE</a></li>
+          <li><a href="#areas" @click.prevent="scrollTo('areas'); isNavOpen = false">ÁREAS DE ATUAÇÃO</a></li>
+          <li><a href="/blog" @click="isNavOpen = false">BLOG</a></li>
+          <li><a href="#contato" @click.prevent="scrollTo('contato'); isNavOpen = false">CONTATO</a></li>
         </ul>
       </div>
     </nav>
@@ -22,7 +23,6 @@
     <section id="hero" class="hero">
       <div class="hero-content">
         <img src="/logo.png" alt="CBLG Advogados" class="hero-logo">
-        <img src="/foto_itens_cblg.jpeg" alt="Detalhes CBLG" class="hero-deco" />
         <button class="hero-cta" @click="scrollTo('contato')">Entre em Contato</button>
       </div>
       <div class="scroll-indicator" @click="scrollTo('sobre')">
@@ -33,30 +33,21 @@
     <!-- Sobre Section -->
     <section id="sobre" class="sobre">
       <div class="container">
-        <h2 class="section-title">Atuação Integrada e Multidisciplinar</h2>
+        <h2 class="section-title">25 ANOS DE EXCELÊNCIA EM DIREITO EMPRESARIAL</h2>
+        <img src="/AB2Lassociado.png" alt="AB2L Associado" class="sobre-badge" />
         <p class="section-description">
           Acompanhamos a evolução do direito e das tecnologias, sobretudo a Inteligência Artificial e, de forma assertiva, responsável e disponível, ajudamos nossos clientes a enfrentar os desafios e as transformações exigidas nas suas atividades empresariais.
         </p>
         <p class="section-description">
           Nossa autuação na área empresarial compreende diversas matérias do Direito, o que nos permite o atendimento às necessidades dos nossos clientes a partir do seu nicho de mercado e considerando as características próprias de cada segmento.
         </p>
-        <div class="valores-grid">
-          <div class="valor-card">
-            <h3>Compromisso</h3>
-            <p>Ouvir e aprender com clientes para prestar serviços com pessoalidade e eficiência. Almejamos ir além da advocacia responsiva. Nosso objetivo é oferecer soluções customizadas, inteligentes e criativas.</p>
-          </div>
-          <div class="valor-card">
-            <h3>Dinamismo</h3>
-            <p>Procuramos desenvolver atendimento multidisciplinar para nichos de mercado por meio do entendimento profundo do segmento de atuação. Isto é, não estamos focados em áreas jurídicas, mas em segmentos de negócios. Possuímos, sim, áreas de especialidade, mas nossa atuação não se limita a elas.</p>
-          </div>
-        </div>
+        
       </div>
     </section>
 
     <!-- Equipe Section -->
     <section id="equipe" class="equipe">
       <div class="container">
-        <h2 class="section-title">Nossa Equipe</h2>
         <div class="equipe-carousel-wrapper">
           <button 
             class="equipe-nav-btn prev" 
@@ -72,7 +63,7 @@
                 <div 
                   class="equipe-photo-container" 
                   :class="{ active: selectedMembro === index }"
-                  @click="toggleMembro(index)"
+                  @click="openTeamModal(membro)"
                 >
                   <img :src="membro.foto" :alt="membro.nome" class="equipe-photo">
                 </div>
@@ -108,20 +99,19 @@
     <!-- Áreas de Atuação Section -->
     <section id="areas" class="areas">
       <div class="container">
-        <h2 class="section-title">Áreas de Atuação</h2>
-        <div class="areas-grid">
+        <h2 class="section-title-areas">ÁREAS DE ATUAÇÃO</h2>
+        <div class="areas-list">
           <div 
             v-for="(area, index) in areas" 
             :key="index" 
-            class="area-card"
-            @mouseenter="hoveredArea = index"
-            @mouseleave="hoveredArea = null"
+            class="area-item"
+            @click="toggleArea(index)"
           >
-            <div class="area-icon">
-              <i :class="area.icon"></i>
+            <div class="area-header">
+              <h3 class="area-title">{{ area.titulo }}</h3>
+              <i class="fas fa-chevron-down area-chevron" :class="{ rotated: expandedArea === index }"></i>
             </div>
-            <h3 class="area-title">{{ area.titulo }}</h3>
-            <div class="area-overlay" :class="{ active: hoveredArea === index }">
+            <div class="area-description" :class="{ active: expandedArea === index }">
               <p>{{ area.descricao }}</p>
             </div>
           </div>
@@ -132,7 +122,7 @@
     <!-- Contato Section -->
     <section id="contato" class="contato">
       <div class="container">
-        <h2 class="section-title">Contato</h2>
+        <h2 class="section-title">CONTATO</h2>
         <div class="contato-content">
           <div class="contato-info">
             <div class="unidade">
@@ -195,6 +185,41 @@
         </div>
       </div>
     </footer>
+
+    <!-- Team Member Modal -->
+    <div v-if="selectedTeamMember" class="modal-overlay" @click="closeTeamModal">
+      <div class="modal-content" @click.stop>
+        <button class="modal-close" @click="closeTeamModal">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-header">
+          <div class="modal-image">
+            <img 
+              :src="selectedTeamMember.foto" 
+              :alt="selectedTeamMember.nome"
+              class="modal-member-photo"
+            />
+          </div>
+          <div class="modal-member-info">
+            <h2 class="modal-member-name">{{ selectedTeamMember.nome }}</h2>
+            <p class="modal-member-role">{{ selectedTeamMember.cargo }}</p>
+            <p class="modal-member-email">{{ getEmail(selectedTeamMember.nome) }}</p>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-member-bio">
+            <h3>Sobre</h3>
+            <p>{{ selectedTeamMember.bio }}</p>
+          </div>
+          <div class="modal-member-specialties">
+            <h3>Especialidades</h3>
+            <ul>
+              <li v-for="(area, idx) in selectedTeamMember.areas" :key="idx">{{ area }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -204,10 +229,12 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 const isScrolled = ref(false)
 const isNavOpen = ref(false)
 const hoveredArea = ref(null)
+const expandedArea = ref(null)
 const currentEquipeIndex = ref(0)
 const selectedMembro = ref(null)
 const equipeScrollAmount = ref(270) // largura do card + gap
 const itemsPerView = ref(4) // quantos itens visíveis por vez
+const selectedTeamMember = ref(null)
 
 const equipe = ref([
   {
@@ -268,81 +295,92 @@ const equipe = ref([
   }
 ])
 
+// Softer pastel palette for area cards (lighter colors)
+const areaCardColors = [
+  '#F4F9FF', '#FDF6F0', '#F5F7E8', '#F6F0FA', '#EAF7F6', '#FFF7F9', '#F3F9F1', '#F8F4F0',
+  '#F0F7FF', '#F5FAFF', '#FFF5F7', '#F5FFF8', '#F8F6FF', '#F6FFFD', '#F9F8F2', '#F7FBFF'
+]
+const getAreaCardStyle = (idx) => ({ background: areaCardColors[idx % areaCardColors.length] })
+
 const maxEquipeIndex = computed(() => {
-  return Math.max(0, equipe.value.length - itemsPerView.value)
+  const totalItems = equipe.value.length
+  const visibleItems = itemsPerView.value
+  const maxIndex = Math.max(0, totalItems - visibleItems)
+  return maxIndex
 })
 
 const areas = ref([
-  {
-    titulo: 'Direito Societário',
-    icon: 'fas fa-building',
-    descricao: 'Assessoria completa em constituição, reestruturação, fusões, aquisições e governança corporativa.'
-  },
-  {
-    titulo: 'Direito Tributário',
-    icon: 'fas fa-file-invoice-dollar',
-    descricao: 'Planejamento tributário, consultoria fiscal e defesa em processos administrativos e judiciais.'
-  },
-  {
-    titulo: 'Planejamento Sucessório e Patrimonial de Empresas Familiares',
-    icon: 'fas fa-users',
-    descricao: 'Estruturação patrimonial, holdings familiares e sucessão empresarial estratégica.'
-  },
-  {
-    titulo: 'Contratos e Responsabilidade Civil',
-    icon: 'fas fa-file-contract',
-    descricao: 'Elaboração, análise e negociação de contratos complexos, além de litígios cíveis.'
-  },
-  {
-    titulo: 'Direito Bancário',
-    icon: 'fas fa-university',
-    descricao: 'Consultoria em operações financeiras, regulação bancária e resolução de conflitos.'
-  },
-  {
-    titulo: 'Negócios Imobiliários',
-    icon: 'fas fa-home',
-    descricao: 'Assessoria em compra, venda, locação e desenvolvimento imobiliário.'
-  },
-  {
-    titulo: 'Relações Familiares e Sucessórias',
-    icon: 'fas fa-heart',
-    descricao: 'Divórcios, inventários, testamentos e planejamento patrimonial familiar.'
-  },
-  {
-    titulo: 'Direito Penal',
-    icon: 'fas fa-gavel',
-    descricao: 'Defesa criminal, white collar crimes e compliance penal empresarial.'
-  },
-  {
-    titulo: 'E-Commerce de Produtos e Serviços',
-    icon: 'fas fa-shopping-cart',
-    descricao: 'Assessoria jurídica completa para negócios digitais e marketplaces.'
-  },
-  {
-    titulo: 'Direito Médico e da Saúde',
-    icon: 'fas fa-heartbeat',
-    descricao: 'Consultoria para profissionais e instituições de saúde, defesa em processos.'
-  },
-  {
-    titulo: 'Direito Educacional',
-    icon: 'fas fa-graduation-cap',
-    descricao: 'Assessoria a instituições de ensino e resolução de conflitos educacionais.'
-  },
-  {
-    titulo: 'Compliance, Ética corporativa e ESG',
-    icon: 'fas fa-shield-alt',
-    descricao: 'Programas de integridade, governança sustentável e adequação regulatória.'
-  },
-  {
-    titulo: 'Proteção da Privacidade',
-    icon: 'fas fa-lock',
-    descricao: 'LGPD, proteção de dados pessoais e segurança da informação.'
-  },
-  {
-    titulo: 'Relações de Consumo',
-    icon: 'fas fa-handshake',
-    descricao: 'Defesa de direitos do consumidor e consultoria para empresas em CDC.'
-  }
+{
+  titulo: 'DIREITO SOCIETÁRIO',
+  icon: 'fas fa-building',
+  descricao: 'Assessoria completa em constituição, reestruturação, fusões, aquisições e governança corporativa.'
+},
+{
+  titulo: 'DIREITO TRIBUTÁRIO',
+  icon: 'fas fa-file-invoice-dollar',
+  descricao: 'Planejamento tributário, consultoria fiscal e defesa em processos administrativos e judiciais.'
+},
+{
+  titulo: 'PLANEJAMENTO SUCESSÓRIO E PATRIMONIAL DE EMPRESAS FAMILIARES',
+  icon: 'fas fa-users',
+  descricao: 'Estruturação patrimonial, holdings familiares e sucessão empresarial estratégica.'
+},
+{
+  titulo: 'CONTRATOS E RESPONSABILIDADE CIVIL',
+  icon: 'fas fa-file-contract',
+  descricao: 'Elaboração, análise e negociação de contratos complexos, além de litígios cíveis.'
+},
+{
+  titulo: 'DIREITO BANCÁRIO',
+  icon: 'fas fa-university',
+  descricao: 'Consultoria em operações financeiras, regulação bancária e resolução de conflitos.'
+},
+{
+  titulo: 'NEGÓCIOS IMOBILIÁRIOS',
+  icon: 'fas fa-home',
+  descricao: 'Assessoria em compra, venda, locação e desenvolvimento imobiliário.'
+},
+{
+  titulo: 'RELAÇÕES FAMILIARES E SUCESSÓRIAS',
+  icon: 'fas fa-heart',
+  descricao: 'Divórcios, inventários, testamentos e planejamento patrimonial familiar.'
+},
+{
+  titulo: 'DIREITO PENAL',
+  icon: 'fas fa-gavel',
+  descricao: 'Defesa criminal, white collar crimes e compliance penal empresarial.'
+},
+{
+  titulo: 'E-COMMERCE DE PRODUTOS E SERVIÇOS',
+  icon: 'fas fa-shopping-cart',
+  descricao: 'Assessoria jurídica completa para negócios digitais e marketplaces.'
+},
+{
+  titulo: 'DIREITO MÉDICO E DA SAÚDE',
+  icon: 'fas fa-heartbeat',
+  descricao: 'Consultoria para profissionais e instituições de saúde, defesa em processos.'
+},
+{
+  titulo: 'DIREITO EDUCACIONAL',
+  icon: 'fas fa-graduation-cap',
+  descricao: 'Assessoria a instituições de ensino e resolução de conflitos educacionais.'
+},
+{
+  titulo: 'COMPLIANCE, ÉTICA CORPORATIVA E ESG',
+  icon: 'fas fa-shield-alt',
+  descricao: 'Programas de integridade, governança sustentável e adequação regulatória.'
+},
+{
+  titulo: 'PROTEÇÃO DA PRIVACIDADE',
+  icon: 'fas fa-lock',
+  descricao: 'LGPD, proteção de dados pessoais e segurança da informação.'
+},
+{
+  titulo: 'RELAÇÕES DE CONSUMO',
+  icon: 'fas fa-handshake',
+  descricao: 'Defesa de direitos do consumidor e consultoria para empresas em CDC.'
+}
+
 ])
 
 const handleScroll = () => {
@@ -361,8 +399,15 @@ const scrollTo = (sectionId) => {
 }
 
 const nextEquipe = () => {
-  if (currentEquipeIndex.value < maxEquipeIndex.value) {
+  const maxIndex = maxEquipeIndex.value
+  console.log('nextEquipe - current:', currentEquipeIndex.value, 'max:', maxIndex, 'total:', equipe.value.length, 'itemsPerView:', itemsPerView.value)
+  
+  if (currentEquipeIndex.value < maxIndex) {
     currentEquipeIndex.value++
+  }
+  // Garantir que não vá além do limite
+  if (currentEquipeIndex.value > maxIndex) {
+    currentEquipeIndex.value = maxIndex
   }
 }
 
@@ -377,6 +422,38 @@ const toggleMembro = (index) => {
     selectedMembro.value = null
   } else {
     selectedMembro.value = index
+  }
+}
+
+const openTeamModal = (membro) => {
+  selectedTeamMember.value = membro
+  document.body.style.overflow = 'hidden' // Prevent background scrolling
+}
+
+const closeTeamModal = () => {
+  selectedTeamMember.value = null
+  document.body.style.overflow = 'auto' // Restore scrolling
+}
+
+const getEmail = (nome) => {
+  // Convert name to email format
+  const emailName = nome.toLowerCase()
+    .replace(/\s+/g, '') // Remove spaces
+    .replace(/[àáâãäå]/g, 'a')
+    .replace(/[èéêë]/g, 'e')
+    .replace(/[ìíîï]/g, 'i')
+    .replace(/[òóôõö]/g, 'o')
+    .replace(/[ùúûü]/g, 'u')
+    .replace(/[ç]/g, 'c')
+    .replace(/[ñ]/g, 'n')
+  return `${emailName}@cblg.com`
+}
+
+const toggleArea = (index) => {
+  if (expandedArea.value === index) {
+    expandedArea.value = null
+  } else {
+    expandedArea.value = index
   }
 }
 
@@ -413,8 +490,9 @@ const computeEquipeLayout = () => {
     equipeScrollAmount.value = cardTotal
 
     // Clamp current index if needed after recalculation
-    if (currentEquipeIndex.value > Math.max(0, equipe.value.length - itemsPerView.value)) {
-      currentEquipeIndex.value = Math.max(0, equipe.value.length - itemsPerView.value)
+    const maxIndex = Math.max(0, equipe.value.length - itemsPerView.value)
+    if (currentEquipeIndex.value > maxIndex) {
+      currentEquipeIndex.value = maxIndex
     }
   } catch (_) {
     // noop
@@ -448,8 +526,7 @@ onUnmounted(() => {
 }
 
 .landing-page {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  font-family: 'Roboto Mono', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  color: #333;
   overflow-x: hidden;
 }
 
@@ -460,22 +537,24 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
+  background: transparent;
+  backdrop-filter: none;
   transition: all 0.3s ease;
-  padding: 1rem 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 0.75rem 0;
+  border-bottom: none;
 }
 
 .navbar.scrolled {
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
 }
 
 .nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  width: 100vw;
+  margin: 0;
+  padding: 0 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -485,6 +564,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   text-decoration: none;
+  margin-right: auto;
 }
 
 .logo-img {
@@ -500,13 +580,18 @@ onUnmounted(() => {
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 2rem;
+  gap: 2.75rem;
+  font-family: 'Roboto Mono', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 400;
+  font-size: 1.05rem;
+  margin-left: auto;
 }
 
 .nav-links a {
   color: #2c3e50;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 400;
+  letter-spacing: 0.02em;
   transition: color 0.3s ease;
   position: relative;
 }
@@ -525,6 +610,14 @@ onUnmounted(() => {
 .nav-links a:hover {
   color: #c9a961;
 }
+.navbar:not(.scrolled) .nav-links a { color: #fff; }
+.navbar:not(.scrolled) .nav-links a:hover { color: #fff; }
+.navbar:not(.scrolled) .nav-links a::after { background: #fff; }
+.navbar:not(.scrolled) .nav-toggle { color: #fff; }
+.navbar.scrolled .nav-links a { color: #2c3e50; }
+.navbar.scrolled .nav-links a:hover { color: #c9a961; }
+.navbar.scrolled .nav-links a::after { background: #c9a961; }
+
 
 .nav-links a:hover::after {
   width: 100%;
@@ -560,7 +653,7 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.55), rgba(255,255,255,0.55));
+  background: linear-gradient(to bottom, rgba(255,255,255,0.0), rgba(255,255,255,0.0));
 }
 
 .hero-content {
@@ -569,11 +662,15 @@ onUnmounted(() => {
   text-align: center;
   color: #2c3e50;
   padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-logo {
   max-width: 520px;
-  width: 90%;
+  width: min(90%, 520px);
   height: auto;
   margin-bottom: 1.75rem;
   animation: fadeInUp 1s ease;
@@ -620,6 +717,8 @@ onUnmounted(() => {
   animation: fadeInUp 1s ease 0.4s both;
   letter-spacing: 1.5px;
   text-transform: uppercase;
+  display: inline-block;
+  margin: 0 auto;
 }
 
 .hero-cta:hover {
@@ -678,6 +777,7 @@ onUnmounted(() => {
 }
 
 .section-title {
+  font-family: 'Roboto Mono', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 3rem;
@@ -686,6 +786,29 @@ onUnmounted(() => {
   padding-bottom: 1rem;
   font-weight: 600;
   letter-spacing: 0.5px;
+}
+.section-title-areas{
+  font-family: 'Roboto Mono', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #f9fbfd;
+  position: relative;
+  padding-bottom: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.section-title-areas::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: #c9a961;
+  border-radius: 2px;
 }
 
 .section-title::after {
@@ -702,8 +825,16 @@ onUnmounted(() => {
 
 /* Sobre Section */
 .sobre {
-  padding: 6rem 0;
-  background: linear-gradient(178deg, #d7e6f7 0%, #edf4fb 100%);
+  padding: 6rem 0 0rem 0;
+  background: linear-gradient(178deg, #ffffff 0%, #ffffff 100%);
+}
+
+.sobre-badge {
+  display: block;
+  width: 190px;
+  max-width: 40vw;
+  margin: -0.5rem auto 2rem;
+  opacity: 0.9;
 }
 
 .section-description {
@@ -754,7 +885,7 @@ onUnmounted(() => {
 
 /* Equipe Section */
 .equipe {
-  padding: 6rem 0;
+  padding: 0 0 6rem;
   background: #ffffff;
 }
 
@@ -762,39 +893,43 @@ onUnmounted(() => {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 2rem;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 0 1rem;
+  gap: 0;
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 0;
 }
 
 .equipe-carousel-container {
   overflow: hidden;
   flex: 1;
-  width: 100%;
-  max-width: 1120px;
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
 .equipe-carousel {
   display: flex;
-  gap: 2rem;
+  gap: 0;
   transition: transform 0.5s ease;
   will-change: transform;
 }
 
 .equipe-member {
-  flex: 0 0 250px;
-  min-width: 250px;
+  flex: 0 0 300px;
+  min-width: 300px;
   text-align: center;
 }
 
 .equipe-photo-container {
-  width: 200px;
-  height: 200px;
-  margin: 0 auto 1.5rem;
-  border-radius: 5%;
+  width: 100%;
+  height: 340px;
+  margin: 0 0 0 0;
+  border-radius: 4px;
   overflow: hidden;
-  border: 4px solid #e0e0e0;
+  border: none;
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
@@ -825,13 +960,11 @@ onUnmounted(() => {
 }
 
 .equipe-photo-container:hover {
-  border-color: #c9a961;
-  transform: scale(1.05);
+  transform: scale(1.01);
 }
 
 .equipe-photo-container.active {
-  border-color: #c9a961;
-  box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.2);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
 }
 
 .equipe-photo {
@@ -932,23 +1065,26 @@ onUnmounted(() => {
 }
 
 .equipe-nav-btn {
-  background: #2c3e50;
+  position: absolute;
+  top: 40%;
+  background: rgba(44, 62, 80, 0.7);
   color: #fff;
   border: none;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
-  font-size: 1.2rem;
-  flex-shrink: 0;
+  font-size: 1.1rem;
+  z-index: 5;
 }
+.equipe-nav-btn.prev { left: 8px; }
+.equipe-nav-btn.next { right: 8px; }
 
 .equipe-nav-btn:hover:not(:disabled) {
-  background: #c9a961;
+  background: #555554;
   transform: scale(1.1);
 }
 
@@ -959,84 +1095,81 @@ onUnmounted(() => {
 
 /* Áreas de Atuação Section */
 .areas {
-  padding: 6rem 0;
-  background: linear-gradient(180deg, #cfe0f4 0%, #e9f2fb 100%);
+  padding: 2rem 0 6rem 0;
+  background-image: linear-gradient(rgba(255,255,255,0.0), rgba(255,255,255,0.0)), url('/Planet2.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-.areas-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
+.areas-list {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.area-card {
-  position: relative;
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 3px;
-  text-align: center;
+.area-item {
+  border-bottom: 1px solid #e2e8f0;
   transition: all 0.3s ease;
+}
+
+.area-item:last-child {
+  border-bottom: none;
+}
+
+.area-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  border-top: 3px solid transparent;
-}
-
-.area-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  border-top-color: #c9a961;
-}
-
-.area-icon {
-  font-size: 2.5rem;
-  color: #2c3e50;
-  margin-bottom: 1rem;
   transition: all 0.3s ease;
 }
 
-.area-card:hover .area-icon {
-  color: #c9a961;
-  transform: scale(1.05);
+.area-header:hover {
+  background: rgba(201, 169, 97, 0.05);
 }
 
 .area-title {
   font-size: 1.1rem;
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  min-height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0;
+  transition: color 0.3s ease;
 }
 
-.area-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(44, 62, 80, 0.96);
-  color: #fff;
-  padding: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  border-radius: 3px;
+.area-header:hover .area-title {
+  color: #c9a961;
 }
 
-.area-overlay.active {
-  opacity: 1;
+.area-chevron {
+  color: #c9a961;
+  font-size: 0.9rem;
+  transition: transform 0.3s ease;
 }
 
-.area-overlay p {
-  font-size: 0.95rem;
+.area-chevron.rotated {
+  transform: rotate(180deg);
+}
+
+.area-description {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background: transparent;
+}
+
+.area-description.active {
+  max-height: 200px;
+}
+
+.area-description p {
+  padding: 0 0 1.5rem 0;
+  margin: 0;
+  color: #ffffff;
   line-height: 1.6;
-  color: #ecf0f1;
+  font-size: 0.95rem;
 }
+
 
 /* Contato Section */
 .contato {
@@ -1212,13 +1345,13 @@ onUnmounted(() => {
   }
 
   .equipe-member {
-    flex: 0 0 200px;
-    min-width: 200px;
+    flex: 0 0 260px;
+    min-width: 260px;
   }
 
   .equipe-photo-container {
-    width: 160px;
-    height: 160px;
+    width: 100%;
+    height: 260px;
   }
 }
 
@@ -1228,22 +1361,37 @@ onUnmounted(() => {
   }
 
   .equipe-member {
-    flex: 0 0 220px;
-    min-width: 220px;
+    flex: 0 0 240px;
+    min-width: 240px;
   }
 
   .equipe-photo-container {
-    width: 170px;
-    height: 170px;
+    width: 100%;
+    height: 220px;
   }
 }
 
 @media (max-width: 768px) {
+  .navbar { 
+    padding: 0.5rem 0;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  .nav-container { 
+    padding: 0 0.75rem;
+    justify-content: space-between;
+  }
+  
   .contato-image {
     max-height: 280px;
   }
+  
   .nav-toggle {
     display: block;
+    order: 2;
   }
 
   .nav-links {
@@ -1258,24 +1406,32 @@ onUnmounted(() => {
     gap: 0.5rem;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     display: none;
+    align-items: flex-end;
   }
 
   .nav-links.open {
     display: flex;
   }
 
-  .logo-img {
-    height: 40px;
+  .nav-links a {
+    color: #2c3e50 !important;
+    text-align: right;
+    padding: 0.5rem 0;
+    width: auto;
   }
 
-  .hero-logo {
-    max-width: 350px;
+  .nav-links a:hover {
+    color: #c9a961 !important;
   }
 
-  .nav-links {
-    gap: 1rem;
-    font-size: 0.9rem;
+  .logo-img { 
+    height: 44px;
+    order: 1;
   }
+
+  .hero-logo { max-width: 280px; }
+
+  .nav-links { gap: 1.25rem; font-size: 1rem; }
 
   .hero-title {
     font-size: 2.5rem;
@@ -1286,26 +1442,29 @@ onUnmounted(() => {
   }
 
   .equipe-carousel-wrapper {
-    gap: 1rem;
-    padding: 0 0.5rem;
+    gap: 0;
+    padding: 0;
   }
 
   .equipe-carousel-container {
-    max-width: 380px;
+    max-width: none;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
   }
 
   .equipe-member {
-    flex: 0 0 180px;
-    min-width: 180px;
+    flex: 0 0 150px;
+    min-width: 150px;
   }
 
   .equipe-carousel {
-    gap: 1rem;
+    gap: 0;
   }
 
   .equipe-photo-container {
-    width: 150px;
-    height: 150px;
+    width: 100%;
+    height: 160px;
+    border-radius: 3px;
   }
 
   .equipe-details {
@@ -1324,9 +1483,8 @@ onUnmounted(() => {
     gap: 2rem;
   }
 
-  .areas-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+  .areas-list {
+    max-width: 100%;
   }
 
   .contato-content {
@@ -1358,14 +1516,12 @@ onUnmounted(() => {
   }
 
   .nav-container {
-    flex-direction: column;
-    gap: 1rem;
+    justify-content: space-between;
   }
 
   .nav-links {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.8rem;
+    right: 0.5rem;
+    padding: 0.5rem 0.75rem;
   }
 
   .hero-title {
@@ -1382,20 +1538,22 @@ onUnmounted(() => {
   }
 
   .equipe-carousel-container {
-    max-width: 160px;
+    max-width: none;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
   }
 
   .equipe-member {
-    flex: 0 0 150px;
-    min-width: 150px;
+    flex: 0 0 120px;
+    min-width: 120px;
   }
 
   .equipe-carousel {
-    gap: 0.5rem;
+    gap: 0;
   }
 
   .equipe-photo-container {
-    width: 120px;
+    width: 100%;
     height: 120px;
   }
 
@@ -1440,6 +1598,223 @@ onUnmounted(() => {
 
   .section-title {
     font-size: 1.8rem;
+  }
+}
+
+/* Team Member Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #666;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.modal-close:hover {
+  background: #c9a961;
+  color: white;
+  transform: scale(1.1);
+}
+
+.modal-header {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem 2rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-image {
+  flex-shrink: 0;
+}
+
+.modal-member-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #c9a961;
+}
+
+.modal-member-info {
+  flex: 1;
+}
+
+.modal-member-name {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.modal-member-role {
+  font-size: 1.1rem;
+  color: #c9a961;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.modal-member-email {
+  font-size: 1rem;
+  color: #001BB7;
+  font-weight: 500;
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+.modal-member-bio h3,
+.modal-member-specialties h3 {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.modal-member-bio p {
+  color: #4a5568;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.modal-member-specialties ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-member-specialties li {
+  padding: 0.5rem 0;
+  color: #4a5568;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.modal-member-specialties li::before {
+  content: '•';
+  color: #c9a961;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+/* Modal Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Mobile Modal Responsive */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 1rem;
+  }
+  
+  .modal-content {
+    max-height: 95vh;
+  }
+  
+  .modal-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 1.5rem 1.5rem 1rem;
+  }
+  
+  .modal-member-photo {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .modal-member-name {
+    font-size: 1.5rem;
+  }
+  
+  .modal-body {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 0.5rem;
+  }
+  
+  .modal-content {
+    border-radius: 12px;
+  }
+  
+  .modal-header {
+    padding: 1rem;
+  }
+  
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  .modal-member-photo {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .modal-member-name {
+    font-size: 1.3rem;
   }
 }
 </style>
