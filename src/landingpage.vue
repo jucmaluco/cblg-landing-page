@@ -281,6 +281,10 @@
             <h2 class="modal-member-name">{{ selectedTeamMember.nome }}</h2>
             <p class="modal-member-role">{{ selectedTeamMember.cargo }}</p>
             <p class="modal-member-email">{{ getEmail(selectedTeamMember.nome) }}</p>
+            <a :href="selectedTeamMember.linkedin" target="_blank" rel="noopener" class="modal-linkedin-link">
+              <i class="fab fa-linkedin"></i>
+              LinkedIn
+            </a>
           </div>
         </div>
         <div class="modal-body">
@@ -378,21 +382,24 @@ const equipe = ref([
     cargo: 'Sócio',
     foto: '/foto_andré_castello_branco.jpg',
     bio: 'Atuação em Direito Societário e empresarial.',
-    areas: ['Direito Societário', 'Governança Corporativa']
+    areas: ['Direito Societário', 'Governança Corporativa'],
+    linkedin: 'https://www.linkedin.com/in/andre-castello-branco'
   },
   {
     nome: 'Alexandre Lobosco',
     cargo: 'Sócio',
     foto: '/foto_alexandre_lobosco.jpg',
     bio: 'Experiência em consultoria estratégica e contencioso empresarial.',
-    areas: ['Contratos', 'Responsabilidade Civil']
+    areas: ['Contratos', 'Responsabilidade Civil'],
+    linkedin: 'https://www.linkedin.com/in/alexandre-lobosco'
   },
   {
     nome: 'Rodrigo Gama Dantas',
     cargo: 'Sócio',
     foto: '/foto_rodrigo_gama_dantas.jpg',
     bio: 'Atuação em direito societário e M&A.',
-    areas: ['M&A', 'Direito Societário']
+    areas: ['M&A', 'Direito Societário'],
+    linkedin: 'https://www.linkedin.com/in/rodrigo-gama-dantas'
   },
 
   {
@@ -400,35 +407,40 @@ const equipe = ref([
     cargo: 'Sócia',
     foto: '/foto_marcia_leardini.jpg',
     bio: 'Foco em compliance, ESG e proteção de dados.',
-    areas: ['Compliance', 'ESG', 'Proteção de Dados']
+    areas: ['Compliance', 'ESG', 'Proteção de Dados'],
+    linkedin: 'https://www.linkedin.com/in/marcia-leardini'
   },
   {
     nome: 'Miguel Barbado Neto',
     cargo: 'Associado',
     foto: '/foto_miguel_barbado_neto.jpg',
     bio: 'Experiência em direito bancário e mercado financeiro.',
-    areas: ['Direito Bancário', 'Mercado Financeiro']
+    areas: ['Direito Bancário', 'Mercado Financeiro'],
+    linkedin: 'https://www.linkedin.com/in/miguel-barbado-neto'
   },
   {
     nome: 'Rafael Munerato Almeida',
     cargo: 'Associado',
     foto: '/foto_rafael_munerato_almeida.jpg',
     bio: 'Atuação em contencioso estratégico e contratos.',
-    areas: ['Contratos', 'Contencioso']
+    areas: ['Contratos', 'Contencioso'],
+    linkedin: 'https://www.linkedin.com/in/rafael-munerato-almeida'
   },
   {
     nome: 'Michelle Gironda Cabrera',
     cargo: 'Sócia',
     foto: '/Michelle_Gironda_Cabrera.jpg',
     bio: 'Especialista em relações de consumo e direito do trabalho.',
-    areas: ['Relações de Consumo', 'Direito do Trabalho']
+    areas: ['Relações de Consumo', 'Direito do Trabalho'],
+    linkedin: 'https://www.linkedin.com/in/michelle-gironda-cabrera'
   },
   {
     nome: 'Cezar Azevedo',
     cargo: 'Associado',
     foto: '/foto_cezar_azevedo.jpeg',
     bio: 'Atuação em consultivo e operações corporativas.',
-    areas: ['Contratos', 'Consultivo Empresarial']
+    areas: ['Contratos', 'Consultivo Empresarial'],
+    linkedin: 'https://www.linkedin.com/in/cezar-azevedo'
   }
 ])
 
@@ -2091,6 +2103,32 @@ onUnmounted(() => {
   font-weight: 500;
 }
 
+.modal-linkedin-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #0077b5;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #0077b5;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.modal-linkedin-link:hover {
+  background: #0077b5;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 119, 181, 0.3);
+}
+
+.modal-linkedin-link i {
+  font-size: 1.1rem;
+}
+
 .modal-body {
   padding: 2rem;
 }
@@ -2177,6 +2215,11 @@ onUnmounted(() => {
     font-size: 1.5rem;
   }
   
+  .modal-linkedin-link {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
   .modal-body {
     padding: 1.5rem;
   }
@@ -2206,6 +2249,11 @@ onUnmounted(() => {
   
   .modal-member-name {
     font-size: 1.3rem;
+  }
+  
+  .modal-linkedin-link {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.6rem;
   }
 }
 
