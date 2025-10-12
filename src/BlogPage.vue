@@ -83,6 +83,12 @@
             </ul>
           </div>
           <div class="footer-section">
+            <h4>Informações Legais</h4>
+            <ul>
+              <li><a href="/privacy-policy">Política de Privacidade</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
             <h4>Siga nas Redes Sociais</h4>
             <div class="social-links">
               <a href="https://linkedin.com" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>

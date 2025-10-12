@@ -100,21 +100,79 @@
     <section id="areas" class="areas">
       <div class="container">
         <h2 class="section-title-areas">ÁREAS DE ATUAÇÃO</h2>
-        <div class="areas-list">
+        <div class="areas-grid">
           <div 
             v-for="(area, index) in areas" 
             :key="index" 
-            class="area-item"
-            @click="toggleArea(index)"
+            class="area-card"
+            @click="openAreaModal(area)"
           >
-            <div class="area-header">
-              <h3 class="area-title">{{ area.titulo }}</h3>
-              <i class="fas fa-chevron-down area-chevron" :class="{ rotated: expandedArea === index }"></i>
+            <div class="area-icon">
+              <i :class="area.icon"></i>
             </div>
-            <div class="area-description" :class="{ active: expandedArea === index }">
-              <p>{{ area.descricao }}</p>
+            <h3 class="area-title">{{ area.titulo }}</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog Preview Section -->
+    <section id="blog-preview" class="blog-preview">
+      <div class="container">
+        <h2 class="section-title">ÚLTIMAS NOTÍCIAS</h2>
+        
+        <div v-if="blogLoading" class="blog-loading">
+          <div class="loading-spinner"></div>
+          <p>Carregando artigos...</p>
+        </div>
+        
+        <div v-else-if="blogError" class="blog-error">
+          <p>{{ blogError }}</p>
+        </div>
+        
+        <div v-else-if="blogPosts.length === 0" class="blog-no-posts">
+          <p>Nenhum artigo encontrado.</p>
+        </div>
+        
+        <div v-else class="blog-carousel-wrapper">
+          <button 
+            class="blog-nav-btn prev" 
+            @click="prevBlog" 
+            :disabled="currentBlogIndex === 0"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          
+          <div class="blog-carousel-container" ref="blogCarouselContainerRef">
+            <div class="blog-carousel" :style="{ transform: `translateX(-${currentBlogIndex * blogScrollAmount}px)` }">
+              <div v-for="(post, index) in blogPosts" :key="post.id" class="blog-card">
+                <div class="blog-image">
+                  <img :src="post.coverImage" :alt="post.title" />
+                </div>
+                <div class="blog-content">
+                  <div class="blog-meta">
+                    <span class="blog-author">{{ post.author }}</span>
+                    <span class="blog-date">{{ formatDate(post.publishedAt) }}</span>
+                  </div>
+                  <h3 class="blog-title">{{ post.title }}</h3>
+                  <p class="blog-excerpt">{{ post.excerpt }}</p>
+                  <button class="blog-read-more" @click="viewBlogPost(post)">Ler mais</button>
+                </div>
+              </div>
             </div>
           </div>
+          
+          <button 
+            class="blog-nav-btn next" 
+            @click="nextBlog"
+            :disabled="currentBlogIndex >= maxBlogIndex"
+          >
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+        
+        <div v-if="!blogLoading && !blogError && blogPosts.length > 0" class="blog-cta">
+          <a href="/blog" class="blog-cta-button">Veja Mais</a>
         </div>
       </div>
     </section>
@@ -149,7 +207,7 @@
             </div>
           </div>
           <div class="contato-img-wrapper">
-            <img src="/fachada-predio-saopaulo.jpg" alt="Fachada CBLG São Paulo" class="contato-image" />
+            <img src="/foto_itens_cblg.jpeg" alt="Foto Caderno e Caneta BLG" class="contato-image" />
           </div>
         </div>
       </div>
@@ -169,14 +227,16 @@
               <li><a href="#sobre" @click.prevent="scrollTo('sobre')">Sobre</a></li>
               <li><a href="#equipe" @click.prevent="scrollTo('equipe')">Equipe</a></li>
               <li><a href="#areas" @click.prevent="scrollTo('areas')">Áreas de Atuação</a></li>
+              <li><a href="/privacy-policy">Política de Privacidade</a></li>
+
             </ul>
           </div>
+
           <div class="footer-section">
             <h4>Siga nas Redes Sociais</h4>
             <div class="social-links">
-              <a href="https://linkedin.com" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
-              <a href="https://instagram.com" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-              <a href="https://facebook.com" target="_blank" rel="noopener"><i class="fab fa-facebook"></i></a>
+              <a href="https://www.linkedin.com/company/cblg-adv-br/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
+              <a href="https://instagram.com/cblgadvogados/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
             </div>
           </div>
         </div>
@@ -193,7 +253,7 @@
           <h3>Controle sua Privacidade</h3>
           <p>Este site utiliza cookies para realização de análises estatísticas acerca de sua utilização. Não são coletados dados pessoais por meio de cookies.</p>
           <p class="privacy-link">
-            <a href="#" @click.prevent="showPrivacyPolicy">Política de Privacidade</a>
+            <a href="/privacy-policy">Política de Privacidade</a>
           </p>
         </div>
         <div class="cookie-buttons">
@@ -237,11 +297,64 @@
         </div>
       </div>
     </div>
+
+    <!-- Area Modal -->
+    <div v-if="selectedArea" class="modal-overlay" @click="closeAreaModal">
+      <div class="modal-content" @click.stop>
+        <button class="modal-close" @click="closeAreaModal">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-header">
+          <div class="modal-icon">
+            <i :class="selectedArea.icon"></i>
+          </div>
+          <div class="modal-area-info">
+            <h2 class="modal-area-title">{{ selectedArea.titulo }}</h2>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-area-description">
+            <p>{{ selectedArea.descricao }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blog Post Modal -->
+    <div v-if="selectedBlogPost" class="modal-overlay" @click="closeBlogModal">
+      <div class="modal-content" @click.stop>
+        <button class="modal-close" @click="closeBlogModal">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-header">
+          <div class="modal-blog-image">
+            <img 
+              :src="selectedBlogPost.coverImage" 
+              :alt="selectedBlogPost.title"
+              class="modal-blog-photo"
+            />
+          </div>
+          <div class="modal-blog-info">
+            <h2 class="modal-blog-title">{{ selectedBlogPost.title }}</h2>
+            <div class="modal-blog-meta">
+              <span class="modal-blog-author">{{ selectedBlogPost.author }}</span>
+              <span class="modal-blog-date">{{ formatDate(selectedBlogPost.publishedAt) }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-blog-content">
+            <div v-html="formatContent(selectedBlogPost.body)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { createClient } from 'contentful'
 
 const isScrolled = ref(false)
 const isNavOpen = ref(false)
@@ -252,7 +365,12 @@ const selectedMembro = ref(null)
 const equipeScrollAmount = ref(270) // largura do card + gap
 const itemsPerView = ref(4) // quantos itens visíveis por vez
 const selectedTeamMember = ref(null)
+const selectedArea = ref(null)
+const selectedBlogPost = ref(null)
 const showCookiePopup = ref(false)
+const currentBlogIndex = ref(0)
+const blogScrollAmount = ref(350) // largura do card + gap
+const blogItemsPerView = ref(3) // quantos itens visíveis por vez
 
 const equipe = ref([
   {
@@ -314,6 +432,11 @@ const equipe = ref([
   }
 ])
 
+// Blog posts data
+const blogPosts = ref([])
+const blogLoading = ref(true)
+const blogError = ref(null)
+
 // Softer pastel palette for area cards (lighter colors)
 const areaCardColors = [
   '#F4F9FF', '#FDF6F0', '#F5F7E8', '#F6F0FA', '#EAF7F6', '#FFF7F9', '#F3F9F1', '#F8F4F0',
@@ -324,6 +447,13 @@ const getAreaCardStyle = (idx) => ({ background: areaCardColors[idx % areaCardCo
 const maxEquipeIndex = computed(() => {
   const totalItems = equipe.value.length
   const visibleItems = itemsPerView.value
+  const maxIndex = Math.max(0, totalItems - visibleItems)
+  return maxIndex
+})
+
+const maxBlogIndex = computed(() => {
+  const totalItems = blogPosts.value.length
+  const visibleItems = blogItemsPerView.value
   const maxIndex = Math.max(0, totalItems - visibleItems)
   return maxIndex
 })
@@ -454,6 +584,102 @@ const closeTeamModal = () => {
   document.body.style.overflow = 'auto' // Restore scrolling
 }
 
+const openAreaModal = (area) => {
+  selectedArea.value = area
+  document.body.style.overflow = 'hidden' // Prevent background scrolling
+}
+
+const closeAreaModal = () => {
+  selectedArea.value = null
+  document.body.style.overflow = 'auto' // Restore scrolling
+}
+
+const nextBlog = () => {
+  const maxIndex = maxBlogIndex.value
+  if (currentBlogIndex.value < maxIndex) {
+    currentBlogIndex.value++
+  }
+  if (currentBlogIndex.value > maxIndex) {
+    currentBlogIndex.value = maxIndex
+  }
+}
+
+const prevBlog = () => {
+  if (currentBlogIndex.value > 0) {
+    currentBlogIndex.value--
+  }
+}
+
+const viewBlogPost = (post) => {
+  selectedBlogPost.value = post
+  document.body.style.overflow = 'hidden' // Prevent background scrolling
+}
+
+const closeBlogModal = () => {
+  selectedBlogPost.value = null
+  document.body.style.overflow = 'auto' // Restore scrolling
+}
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('pt-BR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+
+const formatContent = (content) => {
+  return content.replace(/\n/g, '<br>')
+}
+
+const fetchBlogPosts = async () => {
+  try {
+    const client = createClient({
+      space: 'ka3j7fcma8dg',
+      environment: 'master',
+      accessToken: 'TQ0bwmHQ6CrRtV3fp-ZJXhO-Lu59Q_dtZ61ByDnWJM4'
+    })
+    
+    const response = await client.getEntries({
+      content_type: 'post',
+      order: '-fields.publishedAt',
+      limit: 6 // Limit to 6 posts for preview
+    })
+    
+    // Transform Contentful data to match our blog preview format
+    blogPosts.value = response.items.map(item => {
+      const coverImageUrl = item.fields.coverImage?.fields?.file?.url 
+        ? `https:${item.fields.coverImage.fields.file.url}` 
+        : '/default-blog-image.jpg'
+      
+      console.log('Blog post image URL:', coverImageUrl) // Debug log
+      
+      return {
+        id: item.sys.id,
+        title: item.fields.title,
+        author: item.fields.author,
+        publishedAt: item.fields.publishedAt,
+        coverImage: coverImageUrl,
+        excerpt: getExcerpt(item.fields.body),
+        body: item.fields.body
+      }
+    })
+    
+    blogLoading.value = false
+  } catch (error) {
+    console.error('Error fetching blog posts:', error)
+    blogError.value = 'Erro ao carregar os artigos.'
+    blogLoading.value = false
+  }
+}
+
+const getExcerpt = (text, maxLength = 150) => {
+  if (!text) return ''
+  if (text.length <= maxLength) return text
+  return text.substring(0, maxLength) + '...'
+}
+
 const getEmail = (nome) => {
   // Convert name to email format
   const emailName = nome.toLowerCase()
@@ -496,6 +722,15 @@ const showPrivacyPolicy = () => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  window.addEventListener('resize', handleWindowResize)
+  // Initial layout after mount
+  setTimeout(() => {
+    computeEquipeLayout()
+    computeBlogLayout()
+  }, 0)
+  
+  // Fetch blog posts
+  fetchBlogPosts()
   
   // Always show cookie popup for testing
   showCookiePopup.value = true
@@ -512,6 +747,7 @@ onUnmounted(() => {
 })
 // Dynamic sizing for equipe carousel
 const carouselContainerRef = ref(null)
+const blogCarouselContainerRef = ref(null)
 let resizeTimeoutId = null
 
 const computeEquipeLayout = () => {
@@ -541,9 +777,39 @@ const computeEquipeLayout = () => {
   }
 }
 
+const computeBlogLayout = () => {
+  try {
+    const containerEl = blogCarouselContainerRef.value
+    if (!containerEl) return
+    const carouselEl = containerEl.querySelector('.blog-carousel')
+    const firstCard = containerEl.querySelector('.blog-card')
+    if (!carouselEl || !firstCard) return
+
+    const containerWidth = containerEl.clientWidth
+    const cardRect = firstCard.getBoundingClientRect()
+    const gapString = window.getComputedStyle(carouselEl).gap || window.getComputedStyle(carouselEl).columnGap || '0px'
+    const gap = parseFloat(gapString) || 0
+    const cardTotal = Math.ceil(cardRect.width + gap)
+    const possible = Math.max(1, Math.floor((containerWidth + gap) / cardTotal))
+    blogItemsPerView.value = possible
+    blogScrollAmount.value = cardTotal
+
+    // Clamp current index if needed after recalculation
+    const maxIndex = Math.max(0, blogPosts.value.length - blogItemsPerView.value)
+    if (currentBlogIndex.value > maxIndex) {
+      currentBlogIndex.value = maxIndex
+    }
+  } catch (_) {
+    // noop
+  }
+}
+
 const handleWindowResize = () => {
   if (resizeTimeoutId) window.clearTimeout(resizeTimeoutId)
-  resizeTimeoutId = window.setTimeout(() => computeEquipeLayout(), 100)
+  resizeTimeoutId = window.setTimeout(() => {
+    computeEquipeLayout()
+    computeBlogLayout()
+  }, 100)
 }
 
 onMounted(() => {
@@ -867,7 +1133,7 @@ onUnmounted(() => {
 
 /* Sobre Section */
 .sobre {
-  padding: 3rem 0 0rem 0;
+  padding: 3rem 0 2rem 0;
   background: linear-gradient(178deg, #ffffff 0%, #ffffff 100%);
 }
 
@@ -1173,79 +1439,91 @@ onUnmounted(() => {
   background-repeat: no-repeat;
 }
 
-.areas-list {
-  max-width: 800px;
+.areas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1400px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 0 1rem;
 }
 
-.area-item {
-  transition: all 0.3s ease;
-  width: fit-content;
+.area-card {
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
   text-align: center;
-}
-
-
-.area-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.5rem 0;
   cursor: pointer;
   transition: all 0.3s ease;
+  backdrop-filter: blur(15px);
   position: relative;
-  width: fit-content;
-  margin: 0 auto;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-.area-header:hover {
-  background: rgba(201, 169, 97, 0.05);
+.area-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(201, 169, 97, 0.1) 0%, rgba(0, 27, 183, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.area-card:hover::before {
+  opacity: 1;
+}
+
+.area-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: #c9a961;
+  box-shadow: 0 15px 40px rgba(201, 169, 97, 0.3);
+}
+
+.area-icon {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 1.5rem;
+}
+
+.area-icon i {
+  font-size: 2.5rem;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.area-card:hover .area-icon i {
+  color: #c9a961;
+  transform: scale(1.1);
+  text-shadow: 0 4px 12px rgba(201, 169, 97, 0.4);
 }
 
 .area-title {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0;
-  transition: color 0.3s ease;
   position: relative;
-  display: inline-block;
-}
-
-.area-header:hover .area-title {
-  color: #c9a961;
-}
-
-.area-chevron {
-  color: #c9a961;
-  font-size: 0.9rem;
-  transition: transform 0.3s ease;
-}
-
-.area-chevron.rotated {
-  transform: rotate(180deg);
-}
-
-.area-description {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-  background: transparent;
-}
-
-.area-description.active {
-  max-height: 200px;
-}
-
-.area-description p {
-  padding: 0 0 1.5rem 0;
-  margin: 0;
+  z-index: 2;
+  font-size: 1rem;
+  font-weight: 600;
   color: #ffffff;
-  line-height: 1.6;
-  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+  word-wrap: normal;
+  overflow-wrap: normal;
+  white-space: normal;
+  text-align: center;
+  max-width: 100%;
+  padding: 0 0.5rem;
+  display: block;
+}
+
+.area-card:hover .area-title {
+  color: #ffffff;
 }
 
 
@@ -1561,8 +1839,23 @@ onUnmounted(() => {
     gap: 2rem;
   }
 
-  .areas-list {
-    max-width: 100%;
+  .areas-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    padding: 0 0.5rem;
+  }
+  
+  .area-card {
+    padding: 1.5rem 1rem;
+  }
+  
+  .area-icon i {
+    font-size: 2rem;
+  }
+  
+  .area-title {
+    font-size: 0.95rem;
+    line-height: 1.2;
   }
 
   .contato-content {
@@ -1672,6 +1965,25 @@ onUnmounted(() => {
     width: 35px;
     height: 35px;
     font-size: 0.9rem;
+  }
+
+  .areas-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 0 0.25rem;
+  }
+  
+  .area-card {
+    padding: 1.25rem 0.75rem;
+  }
+  
+  .area-icon i {
+    font-size: 1.8rem;
+  }
+  
+  .area-title {
+    font-size: 0.85rem;
+    line-height: 1.1;
   }
 
   .section-title {
@@ -1892,6 +2204,437 @@ onUnmounted(() => {
   }
   
   .modal-member-name {
+    font-size: 1.3rem;
+  }
+}
+
+/* Area Modal Styles */
+.modal-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #c9a961 0%, #b8941f 100%);
+  border-radius: 50%;
+  margin-right: 1.5rem;
+}
+
+.modal-icon i {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.modal-area-info {
+  flex: 1;
+}
+
+.modal-area-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.modal-area-description p {
+  color: #4a5568;
+  line-height: 1.6;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Mobile Area Modal */
+@media (max-width: 768px) {
+  .modal-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 1.5rem 1.5rem 1rem;
+  }
+  
+  .modal-icon {
+    width: 60px;
+    height: 60px;
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+  
+  .modal-icon i {
+    font-size: 2rem;
+  }
+  
+  .modal-area-title {
+    font-size: 1.5rem;
+  }
+  
+  .modal-body {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-icon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .modal-icon i {
+    font-size: 1.5rem;
+  }
+  
+  .modal-area-title {
+    font-size: 1.3rem;
+  }
+}
+
+/* Blog Preview Section */
+.blog-preview {
+  padding: 6rem 0;
+  background: #f8f9fa;
+}
+
+.blog-loading,
+.blog-error,
+.blog-no-posts {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #c9a961;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.blog-loading p,
+.blog-error p,
+.blog-no-posts p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.blog-error p {
+  color: #e53e3e;
+}
+
+.blog-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.blog-carousel-container {
+  overflow: hidden;
+  flex: 1;
+  width: 100%;
+}
+
+.blog-carousel {
+  display: flex;
+  gap: 2rem;
+  transition: transform 0.5s ease;
+  will-change: transform;
+}
+
+.blog-card {
+  flex: 0 0 350px;
+  min-width: 350px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.blog-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.blog-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.blog-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.blog-card:hover .blog-image img {
+  transform: scale(1.05);
+}
+
+.blog-content {
+  padding: 1.5rem;
+}
+
+.blog-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.blog-author {
+  font-weight: 600;
+  color: #c9a961;
+}
+
+.blog-date {
+  color: #999;
+}
+
+.blog-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.8rem;
+  line-height: 1.4;
+}
+
+.blog-excerpt {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.blog-read-more {
+  background: #c9a961;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.blog-read-more:hover {
+  background: #b8941f;
+  transform: translateY(-2px);
+}
+
+.blog-nav-btn {
+  position: absolute;
+  top: 50%;
+  background: #c9a961;
+  color: #fff;
+  border: 2px solid #c9a961;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  z-index: 5;
+  box-shadow: 0 4px 12px rgba(201, 169, 97, 0.3);
+  transition: all 0.3s ease;
+  transform: translateY(-50%);
+}
+
+.blog-nav-btn.prev { left: -24px; }
+.blog-nav-btn.next { right: -24px; }
+
+.blog-nav-btn:hover:not(:disabled) {
+  background: #b8941f;
+  border-color: #b8941f;
+  transform: translateY(-50%) scale(1.15);
+  box-shadow: 0 6px 20px rgba(201, 169, 97, 0.5);
+}
+
+.blog-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.blog-cta {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.blog-cta-button {
+  display: inline-block;
+  background: #2c3e50;
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.blog-cta-button:hover {
+  background: #c9a961;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(201, 169, 97, 0.3);
+}
+
+/* Blog Modal Styles */
+.modal-blog-image {
+  flex-shrink: 0;
+  margin-right: 1.5rem;
+}
+
+.modal-blog-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 3px solid #c9a961;
+}
+
+.modal-blog-info {
+  flex: 1;
+}
+
+.modal-blog-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 0.5rem 0;
+}
+
+.modal-blog-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-blog-author {
+  color: #c9a961;
+  font-weight: 600;
+}
+
+.modal-blog-date {
+  color: #666;
+}
+
+.modal-blog-content {
+  color: #4a5568;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/* Mobile Blog Responsive */
+@media (max-width: 768px) {
+  .blog-preview {
+    padding: 4rem 0;
+  }
+  
+  .blog-card {
+    flex: 0 0 280px;
+    min-width: 280px;
+  }
+  
+  .blog-image {
+    height: 160px;
+  }
+  
+  .blog-content {
+    padding: 1.25rem;
+  }
+  
+  .blog-title {
+    font-size: 1.1rem;
+  }
+  
+  .blog-nav-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+  .blog-nav-btn.prev { left: -20px; }
+  .blog-nav-btn.next { right: -20px; }
+  
+  .modal-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 1.5rem 1.5rem 1rem;
+  }
+  
+  .modal-blog-image {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+  
+  .modal-blog-photo {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .modal-blog-title {
+    font-size: 1.5rem;
+  }
+  
+  .modal-blog-meta {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-card {
+    flex: 0 0 250px;
+    min-width: 250px;
+  }
+  
+  .blog-image {
+    height: 140px;
+  }
+  
+  .blog-content {
+    padding: 1rem;
+  }
+  
+  .blog-title {
+    font-size: 1rem;
+  }
+  
+  .blog-nav-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+  
+  .blog-nav-btn.prev { left: -17px; }
+  .blog-nav-btn.next { right: -17px; }
+  
+  .modal-blog-photo {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .modal-blog-title {
     font-size: 1.3rem;
   }
 }
