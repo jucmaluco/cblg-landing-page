@@ -848,7 +848,7 @@ onUnmounted(() => {
   background: transparent;
   backdrop-filter: none;
   transition: all 0.3s ease;
-  padding: 0.75rem 0;
+  padding: 1.25rem 0;
   border-bottom: none;
 }
 
@@ -888,11 +888,12 @@ onUnmounted(() => {
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 2.75rem;
+  gap: 3.5rem;
   font-family: 'Roboto Mono', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 400;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   margin-left: auto;
+  padding-right: 2rem;
 }
 
 .nav-links a {
@@ -2291,7 +2292,7 @@ onUnmounted(() => {
 /* Blog Preview Section */
 .blog-preview {
   padding: 6rem 0;
-  background: #f8f9fa;
+  background: linear-gradient(135deg, #d1d9e0 0%, #e2e8f0 30%, #f1f3f4 70%, #d8e2ea 100%);
 }
 
 .blog-loading,

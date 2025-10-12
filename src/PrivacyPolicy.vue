@@ -273,12 +273,18 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   z-index: 1000;
+  background: transparent;
+  backdrop-filter: none;
+  transition: all 0.3s ease;
+  padding: 1.25rem 0;
+  border-bottom: none;
+}
+
+.navbar.scrolled {
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  padding: 0.75rem 0;
 }
 
 .nav-container {
@@ -310,11 +316,12 @@ onUnmounted(() => {
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 2.75rem;
+  gap: 3.5rem;
   font-family: 'Roboto Mono', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 400;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   margin-left: auto;
+  padding-right: 2rem;
 }
 
 .nav-links a {
@@ -340,6 +347,13 @@ onUnmounted(() => {
 .nav-links a:hover {
   color: #c9a961;
 }
+.navbar:not(.scrolled) .nav-links a { color: #fff; }
+.navbar:not(.scrolled) .nav-links a:hover { color: #fff; }
+.navbar:not(.scrolled) .nav-links a::after { background: #fff; }
+.navbar:not(.scrolled) .nav-toggle { color: #fff; }
+.navbar.scrolled .nav-links a { color: #2c3e50; }
+.navbar.scrolled .nav-links a:hover { color: #c9a961; }
+.navbar.scrolled .nav-links a::after { background: #c9a961; }
 
 .nav-links a:hover::after {
   width: 100%;
@@ -356,18 +370,40 @@ onUnmounted(() => {
 
 /* Hero Section */
 .privacy-hero {
-  background: linear-gradient(135deg, #001BB7 0%, #0046FF 100%);
+  background-image: url('/background-fachada.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   padding: 8rem 0 4rem;
   text-align: center;
   color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.privacy-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.0), rgba(255,255,255,0.0));
+}
+
+.privacy-hero .container {
+  position: relative;
+  z-index: 2;
 }
 
 .privacy-title {
-  font-family: 'Playfair Display', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto Mono', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 3.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
   letter-spacing: 1px;
+  color: #2c3e50;
+  animation: fadeInUp 1s ease;
 }
 
 .privacy-subtitle {
@@ -375,6 +411,20 @@ onUnmounted(() => {
   font-weight: 400;
   opacity: 0.9;
   letter-spacing: 0.5px;
+  color: #2c3e50;
+  animation: fadeInUp 1s ease 0.2s both;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Content Section */
@@ -396,14 +446,14 @@ onUnmounted(() => {
 }
 
 .privacy-text h2 {
-  font-family: 'Playfair Display', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto Mono', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 1.8rem;
   color: #2c3e50;
   margin: 3rem 0 1.5rem 0;
   font-weight: 600;
   letter-spacing: 0.5px;
   position: relative;
-  padding-bottom: 0.5rem;
+  padding-bottom: 1rem;
 }
 
 .privacy-text h2::after {
@@ -411,7 +461,7 @@ onUnmounted(() => {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 60px;
+  width: 80px;
   height: 3px;
   background: #c9a961;
   border-radius: 2px;
@@ -519,6 +569,14 @@ onUnmounted(() => {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .navbar { 
+    padding: 0.5rem 0;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  }
+  
   .nav-container {
     padding: 0 0.75rem;
     justify-content: space-between;
