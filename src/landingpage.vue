@@ -13,7 +13,7 @@
           <li><a href="#sobre" @click.prevent="scrollTo('sobre'); isNavOpen = false">SOBRE</a></li>
           <li><a href="#equipe" @click.prevent="scrollTo('equipe'); isNavOpen = false">EQUIPE</a></li>
           <li><a href="#areas" @click.prevent="scrollTo('areas'); isNavOpen = false">ÁREAS DE ATUAÇÃO</a></li>
-          <li><a href="/blog" @click="isNavOpen = false">BLOG</a></li>
+          <li><a href="/blog" @click="isNavOpen = false">NOTÍCIAS</a></li>
           <li><a href="#contato" @click.prevent="scrollTo('contato'); isNavOpen = false">CONTATO</a></li>
         </ul>
       </div>
