@@ -33,14 +33,13 @@
     <!-- Sobre Section -->
     <section id="sobre" class="sobre">
       <div class="container">
-        <h2 class="section-title">25 ANOS DE EXCELÊNCIA EM DIREITO EMPRESARIAL</h2>
-        <img src="/AB2Lassociado.png" alt="AB2L Associado" class="sobre-badge" />
+        <h2 class="section-title">25 ANOS DE EXCELÊNCIA, CREDIBILIDADE E INOVAÇÃO JURÍDICA</h2>
         <p class="section-description">
-          Acompanhamos a evolução do direito e das tecnologias, sobretudo a Inteligência Artificial e, de forma assertiva, responsável e disponível, ajudamos nossos clientes a enfrentar os desafios e as transformações exigidas nas suas atividades empresariais.
-        </p>
+          <strong> Somos um escritório multissetorial e full service, com mais de 25 anos de experiência oferecendo soluções jurídicas completas a clientes nacionais e internacionais.</strong> 
+
+</p>
         <p class="section-description">
-          Nossa autuação na área empresarial compreende diversas matérias do Direito, o que nos permite o atendimento às necessidades dos nossos clientes a partir do seu nicho de mercado e considerando as características próprias de cada segmento.
-        </p>
+          A equipe da CBLG reúne alta expertise em todas as facetas do Direito Empresarial – tributário, societário, contratos, falimentar/recuperacional, penal empresarial e compliance – e conta ainda com sólida atuação em áreas complementares como direito bancário e financeiro, imobiliário, ambiental,  planejamento sucessório e patrimonial, direito médico e educacional, entre outras. Essa integração nos permite oferecer soluções jurídicas completas, personalizadas e eficientes, capazes de atender tanto demandas rotineiras quanto projetos de alta complexidade.        </p>
         
       </div>
     </section>
@@ -48,6 +47,7 @@
     <!-- Equipe Section -->
     <section id="equipe" class="equipe">
       <div class="container">
+        <h2 class="equipe-subtitle">EQUIPE</h2>
         <div class="equipe-carousel-wrapper">
           <button 
             class="equipe-nav-btn prev" 
@@ -186,6 +186,23 @@
       </div>
     </footer>
 
+    <!-- Cookie Consent Popup -->
+    <div v-if="showCookiePopup" class="cookie-popup">
+      <div class="cookie-content">
+        <div class="cookie-text">
+          <h3>Controle sua Privacidade</h3>
+          <p>Este site utiliza cookies para realização de análises estatísticas acerca de sua utilização. Não são coletados dados pessoais por meio de cookies.</p>
+          <p class="privacy-link">
+            <a href="#" @click.prevent="showPrivacyPolicy">Política de Privacidade</a>
+          </p>
+        </div>
+        <div class="cookie-buttons">
+          <button @click="acceptCookies" class="cookie-accept">Aceitar</button>
+          <button @click="declineCookies" class="cookie-decline">Recusar</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Team Member Modal -->
     <div v-if="selectedTeamMember" class="modal-overlay" @click="closeTeamModal">
       <div class="modal-content" @click.stop>
@@ -235,6 +252,7 @@ const selectedMembro = ref(null)
 const equipeScrollAmount = ref(270) // largura do card + gap
 const itemsPerView = ref(4) // quantos itens visíveis por vez
 const selectedTeamMember = ref(null)
+const showCookiePopup = ref(false)
 
 const equipe = ref([
   {
@@ -258,13 +276,7 @@ const equipe = ref([
     bio: 'Atuação em direito societário e M&A.',
     areas: ['M&A', 'Direito Societário']
   },
-  {
-    nome: 'Cezar Azevedo',
-    cargo: 'Associado',
-    foto: '/foto_cezar_azevedo.jpeg',
-    bio: 'Atuação em consultivo e operações corporativas.',
-    areas: ['Contratos', 'Consultivo Empresarial']
-  },
+
   {
     nome: 'Marcia Leardini',
     cargo: 'Sócia',
@@ -292,6 +304,13 @@ const equipe = ref([
     foto: '/Michelle_Gironda_Cabrera.jpg',
     bio: 'Especialista em relações de consumo e direito do trabalho.',
     areas: ['Relações de Consumo', 'Direito do Trabalho']
+  },
+  {
+    nome: 'Cezar Azevedo',
+    cargo: 'Associado',
+    foto: '/foto_cezar_azevedo.jpeg',
+    bio: 'Atuação em consultivo e operações corporativas.',
+    areas: ['Contratos', 'Consultivo Empresarial']
   }
 ])
 
@@ -461,8 +480,31 @@ const handleSubmit = () => {
   alert('Mensagem enviada com sucesso! Entraremos em contato em breve.')
 }
 
+const acceptCookies = () => {
+  localStorage.setItem('cookieConsent', 'accepted')
+  showCookiePopup.value = false
+}
+
+const declineCookies = () => {
+  localStorage.setItem('cookieConsent', 'declined')
+  showCookiePopup.value = false
+}
+
+const showPrivacyPolicy = () => {
+  alert('Política de Privacidade: Esta página está em desenvolvimento. Em breve, você poderá acessar nossa política de privacidade completa.')
+}
+
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  
+  // Always show cookie popup for testing
+  showCookiePopup.value = true
+  
+  // Check if cookie consent was already given (commented out for testing)
+  // const cookieConsent = localStorage.getItem('cookieConsent')
+  // if (!cookieConsent) {
+  //   showCookiePopup.value = true
+  // }
 })
 
 onUnmounted(() => {
@@ -554,7 +596,7 @@ onUnmounted(() => {
 .nav-container {
   width: 100vw;
   margin: 0;
-  padding: 0 1rem;
+  padding: 0 2rem 0 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -780,7 +822,7 @@ onUnmounted(() => {
   font-family: 'Roboto Mono', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 2.5rem;
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
   color: #2c3e50;
   position: relative;
   padding-bottom: 1rem;
@@ -825,7 +867,7 @@ onUnmounted(() => {
 
 /* Sobre Section */
 .sobre {
-  padding: 6rem 0 0rem 0;
+  padding: 3rem 0 0rem 0;
   background: linear-gradient(178deg, #ffffff 0%, #ffffff 100%);
 }
 
@@ -885,8 +927,32 @@ onUnmounted(() => {
 
 /* Equipe Section */
 .equipe {
-  padding: 0 0 6rem;
+  padding: 0 0 3rem;
   background: #ffffff;
+}
+
+.equipe-subtitle {
+  font-family: 'Roboto Mono', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+  position: relative;
+  padding-bottom: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.equipe-subtitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: #c9a961;
+  border-radius: 2px;
 }
 
 .equipe-carousel-wrapper {
@@ -971,6 +1037,7 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
   filter: grayscale(100%);
   transition: filter 0.3s ease;
 }
@@ -1067,9 +1134,9 @@ onUnmounted(() => {
 .equipe-nav-btn {
   position: absolute;
   top: 40%;
-  background: rgba(44, 62, 80, 0.7);
+  background: #c9a961;
   color: #fff;
-  border: none;
+  border: 2px solid #c9a961;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -1079,13 +1146,17 @@ onUnmounted(() => {
   justify-content: center;
   font-size: 1.1rem;
   z-index: 5;
+  box-shadow: 0 4px 12px rgba(201, 169, 97, 0.3);
+  transition: all 0.3s ease;
 }
 .equipe-nav-btn.prev { left: 8px; }
 .equipe-nav-btn.next { right: 8px; }
 
 .equipe-nav-btn:hover:not(:disabled) {
-  background: #555554;
-  transform: scale(1.1);
+  background: #b8941f;
+  border-color: #b8941f;
+  transform: scale(1.15);
+  box-shadow: 0 6px 20px rgba(201, 169, 97, 0.5);
 }
 
 .equipe-nav-btn:disabled {
@@ -1105,24 +1176,29 @@ onUnmounted(() => {
 .areas-list {
   max-width: 800px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .area-item {
-  border-bottom: 1px solid #e2e8f0;
   transition: all 0.3s ease;
+  width: fit-content;
+  text-align: center;
 }
 
-.area-item:last-child {
-  border-bottom: none;
-}
 
 .area-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 1rem;
   padding: 1.5rem 0;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .area-header:hover {
@@ -1130,11 +1206,13 @@ onUnmounted(() => {
 }
 
 .area-title {
-  font-size: 1.1rem;
-  font-weight: 500;
+  font-size: 1.3rem;
+  font-weight: 700;
   color: #ffffff;
   margin: 0;
   transition: color 0.3s ease;
+  position: relative;
+  display: inline-block;
 }
 
 .area-header:hover .area-title {
@@ -1815,6 +1893,135 @@ onUnmounted(() => {
   
   .modal-member-name {
     font-size: 1.3rem;
+  }
+}
+
+/* Cookie Consent Popup */
+.cookie-popup {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: #2c3e50;
+  color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  animation: slideUp 0.5s ease;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.cookie-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cookie-text h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  color: #c9a961;
+}
+
+.cookie-text p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #ffffff;
+}
+
+.privacy-link {
+  margin-top: 0.5rem !important;
+}
+
+.privacy-link a {
+  color: #c9a961;
+  text-decoration: underline;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.privacy-link a:hover {
+  color: #b8941f;
+  text-decoration: none;
+}
+
+.cookie-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.cookie-accept,
+.cookie-decline {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cookie-accept {
+  background: #c9a961;
+  color: #2c3e50;
+}
+
+.cookie-accept:hover {
+  background: #b8941f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(201, 169, 97, 0.3);
+}
+
+.cookie-decline {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+.cookie-decline:hover {
+  background: #ffffff;
+  color: #2c3e50;
+  transform: translateY(-2px);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Cookie Popup */
+@media (max-width: 768px) {
+  .cookie-popup {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+  
+  .cookie-content {
+    padding: 1rem;
+  }
+  
+  .cookie-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .cookie-accept,
+  .cookie-decline {
+    width: 100%;
+    text-align: center;
   }
 }
 </style>
