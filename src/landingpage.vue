@@ -72,11 +72,13 @@
                 
                 <transition name="slide-down">
                   <div v-if="selectedMembro === index" class="equipe-details">
-                    <p class="equipe-bio">{{ membro.bio }}</p>
+                    <div class="equipe-bio">
+  <p v-for="(par, i) in paragraphs(membro.bio)" :key="i">{{ par }}</p>
+</div>
                     <div class="equipe-especialidades">
-                      <strong>Especialidades:</strong>
+                      <strong>Formação:</strong>
                       <ul>
-                        <li v-for="(area, idx) in membro.areas" :key="idx">{{ area }}</li>
+                        <li v-for="(item, idx) in membro.formacao || membro.areas" :key="idx">{{ item }}</li>
                       </ul>
                     </div>
                   </div>
@@ -99,7 +101,7 @@
     <!-- Áreas de Atuação Section -->
     <section id="areas" class="areas">
       <div class="container">
-        <h2 class="section-title-areas">ÁREAS DE ATUAÇÃO</h2>
+        <h2 class="section-title">ÁREAS DE ATUAÇÃO</h2>
         <div class="areas-grid">
           <div 
             v-for="(area, index) in areas" 
@@ -111,6 +113,7 @@
               <i :class="area.icon"></i>
             </div>
             <h3 class="area-title">{{ area.titulo }}</h3>
+            <div class="area-title-line"></div>
           </div>
         </div>
       </div>
@@ -280,7 +283,7 @@
           <div class="modal-member-info">
             <h2 class="modal-member-name">{{ selectedTeamMember.nome }}</h2>
             <p class="modal-member-role">{{ selectedTeamMember.cargo }}</p>
-            <p class="modal-member-email">{{ getEmail(selectedTeamMember.nome) }}</p>
+            <p class="modal-member-email">{{ selectedTeamMember.email || getEmail(selectedTeamMember.nome) }}</p>
             <a :href="selectedTeamMember.linkedin" target="_blank" rel="noopener" class="modal-linkedin-link">
               <i class="fab fa-linkedin"></i>
               LinkedIn
@@ -289,13 +292,14 @@
         </div>
         <div class="modal-body">
           <div class="modal-member-bio">
-            <h3>Sobre</h3>
-            <p>{{ selectedTeamMember.bio }}</p>
-          </div>
+  <h3>Sobre</h3>
+  <p v-for="(par, i) in paragraphs(selectedTeamMember.bio)" :key="i">{{ par }}</p>
+</div>
+
           <div class="modal-member-specialties">
-            <h3>Especialidades</h3>
+            <h3>Formação</h3>
             <ul>
-              <li v-for="(area, idx) in selectedTeamMember.areas" :key="idx">{{ area }}</li>
+              <li v-for="(item, idx) in selectedTeamMember.formacao || selectedTeamMember.areas" :key="idx">{{ item }}</li>
             </ul>
           </div>
         </div>
@@ -376,73 +380,177 @@ const currentBlogIndex = ref(0)
 const blogScrollAmount = ref(350) // largura do card + gap
 const blogItemsPerView = ref(3) // quantos itens visíveis por vez
 
+const paragraphs = (text) =>
+  (text || '')
+    .split(/\n\s*\n/) // separa quando encontra linha em branco
+    .map(t => t.trim())
+    .filter(Boolean)
+
 const equipe = ref([
   {
     nome: 'André Castello Branco',
-    cargo: 'Sócio',
+    cargo: 'Sócio-fundador',
     foto: '/foto_andré_castello_branco.jpg',
-    bio: 'Atuação em Direito Societário e empresarial.',
-    areas: ['Direito Societário', 'Governança Corporativa'],
-    linkedin: 'https://www.linkedin.com/in/andre-castello-branco'
+    bio: `Especialista em Direito Societário, André atua na mediação de conflitos empresariais, negociações estratégicas e consultoria jurídica voltada ao planejamento e à estruturação societária e de negócios. Sua prática combina visão jurídica e estratégia empresarial, assessorando companhias e seus sócios em processos de reorganização, estruturação de governança e resolução de disputas societárias.
+
+Destaca-se por sua excelência na elaboração e revisão de contratos, acordos de quotistas e instrumentos de investimento, buscando soluções equilibradas e sustentáveis. Com perfil conciliador, foca na prevenção de litígios, conduzindo mediações e negociações complexas para a construção de acordos duradouros e alinhados aos interesses das partes.
+
+Também possui experiência como Conselheiro Fiscal, agregando valor à gestão corporativa.`,
+    formacao: [
+      'Bacharel em Direito pela Universidade de São Paulo (USP).',
+      'Pós-Graduação em Direito Administrativo (Novas Tendências em Licitações e Contratos Públicos) pela Escola de Direito de São Paulo da Fundação Getúlio Vargas (FGV/SP).',
+      'Especialista em Direito Societário pela Escola de Direito de São Paulo da Fundação Getúlio Vargas (FGV/SP)',
+      'Especialista em Direito Tributário pela Pontifícia Universidade Católica de São Paulo.'
+    ],
+    linkedin: 'https://www.linkedin.com/in/andré-castello-branco-colotto-028519/',
+    email: 'acastello@cblg.adv.br'
   },
   {
     nome: 'Alexandre Lobosco',
-    cargo: 'Sócio',
+    cargo: 'Sócio-fundador',
     foto: '/foto_alexandre_lobosco.jpg',
-    bio: 'Experiência em consultoria estratégica e contencioso empresarial.',
-    areas: ['Contratos', 'Responsabilidade Civil'],
-    linkedin: 'https://www.linkedin.com/in/alexandre-lobosco'
+    bio: `Atua nas áreas de Direito Tributário — consultivo e contencioso —, Direito Societário e Planejamento Patrimonial e Sucessório. No campo tributário, assessora empresas e grupos econômicos em planejamento fiscal, reorganizações societárias com impactos tributários, defesa em litígios administrativos e judiciais e implementação de programas de compliance tributário.
+
+Possui também ampla experiência em operações conexas ao Direito Imobiliário, especialmente na estruturação de aquisições, incorporações e desenvolvimento de empreendimentos sob a ótica tributária, incluindo a análise e otimização de seus reflexos fiscais.
+
+Na esfera societária, presta consultoria em operações de reorganização empresarial, fusões e aquisições, elaboração de contratos societários e estruturação de modelos de governança corporativa, sempre com uma abordagem estratégica e orientada aos objetivos de negócio dos clientes.
+
+Em planejamento patrimonial e sucessório, Alexandre assessora famílias e grupos empresariais na estruturação de estratégias voltadas à preservação e sucessão de patrimônio, conciliando segurança, eficiência fiscal e harmonia entre gerações.
+
+Combina sólida formação acadêmica com prática profissional pautada pela precisão técnica, visão integrada e foco em resultados. Alexandre é membro das Comissões de Direito Tributário e de Direito Societário da OAB/SP.`,
+    formacao: [
+      'Bacharel em Direito pela Universidade de São Paulo (USP), com especialização em Direito Empresarial.',
+      'Especialista em Direito Tributário pela Pontifícia Universidade Católica de São Paulo (PUC-SP).',
+      'Especialista em Direito Ambiental pelo Instituto Nacional de Estudos Ambientais Avançados e Faculdades Metropolitanas Unidas.',
+      'Pós-Graduação em Direito Administrativo (Novas Tendências em Licitações e Contratos Públicos) pela Escola de Direito de São Paulo da Fundação Getúlio Vargas (FGV /SP).'
+    ],
+    linkedin: 'https://www.linkedin.com/in/alexandre-lobosco-47231a32/',
+    email: 'alobosco@cblg.adv.br'
   },
   {
     nome: 'Rodrigo Gama Dantas',
-    cargo: 'Sócio',
+    cargo: 'Sócio-fundador',
     foto: '/foto_rodrigo_gama_dantas.jpg',
-    bio: 'Atuação em direito societário e M&A.',
-    areas: ['M&A', 'Direito Societário'],
-    linkedin: 'https://www.linkedin.com/in/rodrigo-gama-dantas'
-  },
+    bio: `Responsável pelo contencioso cível e empresarial do escritório, Rodrigo Gama possui ampla experiência em litígios que tramitam tanto no Poder Judiciário quanto em Câmaras Arbitrais, tendo atuado na defesa de clientes de diversos setores da economia — como imobiliário, saúde, segurança patrimonial, educação, obras e saneamento, entre outros.
 
+Sua atuação destaca-se pela condução estratégica de disputas complexas e pela elaboração de soluções processuais criativas e personalizadas. Com especialização em mediação, desenvolve trabalho voltado à gestão eficiente de conflitos empresariais e contratuais, priorizando a prevenção de controvérsias e a obtenção de resultados jurídicos consistentes e sustentáveis.
+
+Aliando técnica e pragmatismo, assessora empresas nacionais e estrangeiras na estruturação de estratégias contenciosas e preventivas, sempre com foco na mitigação de riscos e na eficiência jurídica.`,
+    formacao: [
+      'Bacharel em Direito pela Universidade de São Paulo (USP), com especialização em Direito Empresarial.',
+      'Pós-Graduação em Arbitragem e em Direito Imobiliário e Negócios Imobiliários pela Escola de Direito de São Paulo da Fundação Getúlio Vargas (FGV/SP).'
+    ],
+    linkedin: 'https://www.linkedin.com/in/rodrigo-dantas-gama-83274a269/',
+    email: 'rgama@cblg.adv.br'
+  },
+  {
+    nome: 'Marcelo Freitas Ferreira de Oliveira',
+    cargo: 'Sócio',
+    foto: '/marcelo_freitas.jpeg',
+    bio: `Advogado com atuação predominante em direito de família e das sucessões, além de ampla experiência em contencioso cível e imobiliário de alta complexidade.
+
+Atua na condução de disputas e negociações patrimoniais relevantes, que envolvem desde partilhas e inventários até litígios contratuais e de responsabilidade civil.
+
+Autor de livro e artigos nas áreas de literatura e crítica literária, integra sua formação humanista à prática jurídica, com atenção à interpretação rigorosa dos fatos e à construção de soluções consistentes, eficazes e sensíveis à complexidade das relações pessoais e patrimoniais.`,
+    formacao: [
+      'Bacharel em Direito pela Pontifícia Universidade Católica de São Paulo (PUC/SP).',
+      'Mestre e Doutor em Teoria Literária e Literatura Comparada pela Universidade de São Paulo (USP).',
+      'Especialista em Direito Processual Civil pela Pontifícia Universidade Católica de São Paulo (PUC/SP).'
+    ],
+    linkedin: 'https://www.linkedin.com/in/marcelo-ferreira-de-oliveira-861bb632/',
+    email: 'moliveira@cblg.adv.br'
+  },
+  {
+    nome: 'Karina de Lara Lima',
+    cargo: 'Sócia',
+    foto: '/karina_foto.jpeg',
+    bio: `Advogada com sólida trajetória na área Cível, atuando especialmente em demandas indenizatórias e consumeristas.
+
+Especialista em Direito de Família e Sucessões, conduz seus casos com sensibilidade, técnica e foco em soluções jurídicas eficazes, conciliando empatia com precisão técnica.
+
+Participa ativamente de Comissões da OAB/SP e da Subseção de Santo Amaro, contribuindo para o aprimoramento da prática jurídica e para o fortalecimento da advocacia.`,
+    formacao: [
+      'Bacharel em Direito pela Universidade Estadual Paulista - UNESP.',
+      'Pós-graduação em Direito de Família e Sucessões pela Universidade Legale.',
+      'Pós-graduação em Direito Imobiliário pela Universidade Legale.',
+      'Formação como Conciliadora e Mediadora pela Universidade Legale.'
+    ],
+    linkedin: 'https://www.linkedin.com/in/karina-lara-lima-kll201922/',
+    email: 'klima@cblg.adv.br'
+  },
+  {
+    nome: 'Ana Celia Guarnieri',
+    cargo: 'Sócia',
+    foto: '/ana_celia_foto.jpg',
+    bio: `Advogada com atuação nas áreas cível, empresarial e societária, e sólida expertise em direito imobiliário. Sua trajetória combina visão estratégica, profundidade técnica e experiência relevante tanto na iniciativa privada quanto no setor público.
+
+Participou da coordenação e elaboração de planos de governo em diferentes esferas — Federal, Estadual e Municipal, incluindo São Paulo e Rio de Janeiro — conduzindo pesquisas estratégicas e programas de capacitação em temas centrais da administração pública.
+
+Foi Chefe de Gabinete na Câmara Municipal de São Paulo, Assessora Especial do Gabinete do Prefeito na Prefeitura de São Paulo, professora e pesquisadora da Fundação Getúlio Vargas e Coordenadora do Instituto de Pesquisa da Universidade Bandeirante de São Paulo.
+
+Nos Estados Unidos, foi consultora de advocacy e políticas públicas da American Cancer Society, contribuindo para iniciativas de impacto social e institucional em âmbito internacional.`,
+    formacao: [
+      'Bacharel em Direito pela Universidade de São Paulo (USP).',
+      'Mestre e Doutora em Ciências da Comunicação pela Universidade de São Paulo (USP).',
+      'Pós-Graduação em Administração pela Fundação Getúlio Vargas (FGV/SP).'
+    ],
+    linkedin: 'https://www.linkedin.com/in/anaceliaguarnieri/',
+    email: 'aguarnieri@cblg.adv.br'
+  },
+  {
+    nome: 'Miguel Barbado Neto',
+    cargo: 'Sócio',
+    foto: '/foto_miguel_barbado_neto.jpg',
+    bio: `Especialista em Direito Tributário, Miguel Barbado Neto atua em litígios judiciais e administrativos envolvendo tributos federais, estaduais e municipais.
+
+Possui experiência em consultoria tributária e operações de compra e venda de imóveis urbanos e rurais, assessorando clientes na estruturação de negócios seguros e eficientes sob a ótica fiscal.
+
+Destaca-se pela sua atuação técnica, criteriosa e orientada à segurança jurídica, tendo construído sólida reputação junto a empresas e pessoas físicas.`,
+    formacao: [
+      'Bacharel em Direito pela Faculdade de Direito Presbiteriana Mackenzie, 2007.',
+      'Pós-graduação em Direito Tributário pela LFG Universidade Anhanguera Uniderp.'
+    ],
+    linkedin: 'https://www.linkedin.com/in/miguel-barbado-8a5771269/',
+    email: 'mbarbado@cblg.adv.br'
+  },
   {
     nome: 'Marcia Leardini',
     cargo: 'Sócia',
     foto: '/foto_marcia_leardini.jpg',
-    bio: 'Foco em compliance, ESG e proteção de dados.',
-    areas: ['Compliance', 'ESG', 'Proteção de Dados'],
-    linkedin: 'https://www.linkedin.com/in/marcia-leardini'
-  },
-  {
-    nome: 'Miguel Barbado Neto',
-    cargo: 'Associado',
-    foto: '/foto_miguel_barbado_neto.jpg',
-    bio: 'Experiência em direito bancário e mercado financeiro.',
-    areas: ['Direito Bancário', 'Mercado Financeiro'],
-    linkedin: 'https://www.linkedin.com/in/miguel-barbado-neto'
-  },
-  {
-    nome: 'Rafael Munerato Almeida',
-    cargo: 'Associado',
-    foto: '/foto_rafael_munerato_almeida.jpg',
-    bio: 'Atuação em contencioso estratégico e contratos.',
-    areas: ['Contratos', 'Contencioso'],
-    linkedin: 'https://www.linkedin.com/in/rafael-munerato-almeida'
+    bio: `Advogada com ampla experiência nas áreas criminal e de compliance. Mestre em Direito Empresarial, com foco de pesquisa em direito penal econômico.
+
+Professora nas disciplinas de Direito Penal, Processual Penal, Compliance e Proteção de Privacidade na graduação e pós-graduação da Unicuritiba e da FAE Business School.
+
+É presidente da Comissão de Advogadas Criminalistas da Associação Paranaense de Advogados Criminalistas e atua especialmente em casos envolvendo crimes empresariais, ambientais e de responsabilidade corporativa.`,
+    formacao: [
+      'Bacharel em Direito pela Faculdades Integradas Curitiba.',
+      'Mestre em Direito Empresarial pela Unicuritiba'
+    ],
+    linkedin: 'https://www.linkedin.com/in/marcia-leardini-a8272321b/',
+    email: 'mleardini@cblg.adv.br'
   },
   {
     nome: 'Michelle Gironda Cabrera',
     cargo: 'Sócia',
     foto: '/Michelle_Gironda_Cabrera.jpg',
-    bio: 'Especialista em relações de consumo e direito do trabalho.',
-    areas: ['Relações de Consumo', 'Direito do Trabalho'],
-    linkedin: 'https://www.linkedin.com/in/michelle-gironda-cabrera'
-  },
-  {
-    nome: 'Cezar Azevedo',
-    cargo: 'Associado',
-    foto: '/foto_cezar_azevedo.jpeg',
-    bio: 'Atuação em consultivo e operações corporativas.',
-    areas: ['Contratos', 'Consultivo Empresarial'],
-    linkedin: 'https://www.linkedin.com/in/cezar-azevedo'
+    bio: `Advogada criminalista e diretora do núcleo criminal do CBLG Advogados. Doutora em Direito Socioeconômico e Desenvolvimento pela Pontifícia Universidade Católica do Paraná.
+
+Professora de Direito Processual Penal e Penal no Centro Universitário Curitiba e na Faculdade de Pinhais, além de coordenadora do curso de pós-graduação em Ciências Criminais da UniFapi.
+
+Leciona ainda na Escola Paranaense de Direito, na Defensoria Pública do Estado de São Paulo e na Escola Superior de Advocacia da OAB/MG. Sua trajetória combina sólida formação acadêmica com reconhecida atuação pública e institucional.`,
+    formacao: [
+      'Bacharel em Direito pela Pontifícia Universidade Católica do Paraná',
+      'Mestre em Direito Empresarial e Cidadania pelo Centro Universitário Curitiba.',
+      'Doutora em Direito Socioeconômico e Desenvolvimento pela Pontifícia Universidade Católica do Paraná.',
+      'Pós-doutoranda pela Universidade Federal do Paraná.',
+      'Especialista em Direito Criminal pelo Centro Universitário Curitiba.',
+      'Especialista em Ciências Jurídicas pela Fundação Escola do Ministério Público do Estado do Paraná.'
+    ],
+    linkedin: 'https://www.linkedin.com/in/michelle-gironda-cabrera-a1637a228/',
+    email: 'mcabrera@cblg.adv.br'
   }
 ])
+
 
 // Blog posts data
 const blogPosts = ref([])
@@ -474,72 +582,64 @@ const areas = ref([
 {
   titulo: 'DIREITO SOCIETÁRIO',
   icon: 'fas fa-building',
-  descricao: 'Assessoria completa em constituição, reestruturação, fusões, aquisições e governança corporativa.'
+  descricao: 'Prestamos assessoria para constituição, estruturação e reestruturação de sociedades comerciais em diversos segmentos da economia, joint ventures e consórcios. Elaboramos e revisamos contratos comerciais.\n\nRealizamos auditoria legal e prestamos assessoria completa para fusões e aquisições (M&A), incluindo, entre outras atividades, a estruturação jurídica da operação, negociação, elaboração e revisão dos instrumentos, due diligence, orientação para criação e manutenção segura de data room e acompanhamento do cumprimento das obrigações contratuais.'
 },
 {
   titulo: 'DIREITO TRIBUTÁRIO',
   icon: 'fas fa-file-invoice-dollar',
-  descricao: 'Planejamento tributário, consultoria fiscal e defesa em processos administrativos e judiciais.'
+  descricao: 'Atuamos em processos administrativos e judiciais sempre em favor dos direitos dos contribuintes, seja representando empresas e pessoas físicas em demandas promovidas pelo Poder Público, seja propondo as ações competentes para a defesa dos referidos direitos. Também prestamos consultoria tributária, incluindo assessoria para planejamento tributário e de governança para empresas e pessoas físicas.'
 },
 {
   titulo: 'PLANEJAMENTO SUCESSÓRIO E PATRIMONIAL DE EMPRESAS FAMILIARES',
   icon: 'fas fa-users',
-  descricao: 'Estruturação patrimonial, holdings familiares e sucessão empresarial estratégica.'
+  descricao: 'Prestamos assessoria para planejamento e implantação personalizada de sucessão e gestão patrimonial em empresas familiares. Buscamos a harmonização de interesses das partes envolvidas à luz dos princípios de governança corporativa e oferecemos as melhores soluções a partir da legislação cível, societária e tributária.'
 },
 {
   titulo: 'CONTRATOS E RESPONSABILIDADE CIVIL',
   icon: 'fas fa-file-contract',
-  descricao: 'Elaboração, análise e negociação de contratos complexos, além de litígios cíveis.'
+  descricao: 'Assessoramos pessoas físicas e jurídicas na elaboração e revisão técnica de contratos de diversos segmentos, visando a segurança do negócio em questão, bem como a prevenção e mitigação de riscos. Também atuamos em processos judiciais e arbitrais.'
 },
 {
   titulo: 'DIREITO BANCÁRIO',
   icon: 'fas fa-university',
-  descricao: 'Consultoria em operações financeiras, regulação bancária e resolução de conflitos.'
+  descricao: 'Oferecemos assessoria jurídica para instituições financeiras e equiparadas para recuperação de créditos, execução de garantias e negociação com devedores, incluindo o patrocínio das medidas judiciais pertinentes. Também prestamos assessoria para análise, negociação e reestruturação e discussão judicial de grandes dívidas com instituições financeiras e equiparadas.'
 },
 {
   titulo: 'NEGÓCIOS IMOBILIÁRIOS',
   icon: 'fas fa-home',
-  descricao: 'Assessoria em compra, venda, locação e desenvolvimento imobiliário.'
+  descricao: 'Prestamos assessoria em operações, contratos e empreendimentos imobiliários mediante a elaboração e análise de contratos de aquisição ou venda de imóveis urbanos e rurais, bem como a realização de auditoria legal. Elaboramos e analisamos contratos de locação residencial e comercial, além de outros relacionados a questões imobiliárias.'
 },
 {
   titulo: 'RELAÇÕES FAMILIARES E SUCESSÓRIAS',
   icon: 'fas fa-heart',
-  descricao: 'Divórcios, inventários, testamentos e planejamento patrimonial familiar.'
+  descricao: 'Prestamos assessoria envolvendo os mais diversos temas afetos ao direito de família e direito de sucessões. Elaboramos pactos antenupciais, contratos de união estável e dissolução. Assessoramos os clientes em divórcios consensuais ou litigiosos e em todas as medidas relacionadas, tais como cautelares, prestação de alimentos, guarda, interdição, tutela, curatela. Atuamos em inventários e na elaboração, formalização e cumprimento de testamentos.'
 },
 {
   titulo: 'DIREITO PENAL',
   icon: 'fas fa-gavel',
-  descricao: 'Defesa criminal, white collar crimes e compliance penal empresarial.'
+  descricao: 'Com enfoque na atividade empresarial, prestamos assessoria personalizada em sistemas de gestão, serviços, contratos e treinamentos corporativos para prevenção de ilícitos criminais.\n\nRealizamos orientação e defesa de clientes, pessoas físicas e jurídicas, que estejam na condição de investigados ou vítimas de crimes, atuando desde a fase de investigação preliminar, em inquéritos policiais e procedimentos administrativos iniciados pelo Ministério Público ou outras autoridades.\n\nAtuamos em crimes relacionados a licitações, contra a ordem tributária, contra o meio ambiente, o patrimônio, as relações de consumo, crimes de lavagem de capitais, associação ou organização criminosa, digitais, contra a honra e crimes dolosos ou culposos praticados no exercício da atividade médica ou de outras áreas da saúde.'
 },
-{
-  titulo: 'E-COMMERCE DE PRODUTOS E SERVIÇOS',
-  icon: 'fas fa-shopping-cart',
-  descricao: 'Assessoria jurídica completa para negócios digitais e marketplaces.'
-},
+
 {
   titulo: 'DIREITO MÉDICO E DA SAÚDE',
   icon: 'fas fa-heartbeat',
-  descricao: 'Consultoria para profissionais e instituições de saúde, defesa em processos.'
+  descricao: 'Prestamos assessoria especializada para atender às necessidades próprias de hospitais, clínicas, laboratórios e entidades afins, inclusive startups. Realizamos diagnóstico dos riscos e prestamos consultoria sobre questões decorrentes do uso de novas tecnologias que integram o dever de sigilo e o direito digital.\n\nAtuamos em questões envolvendo marketing profissional e representação de instituições e de profissionais de saúde perante os conselhos de classe e agências reguladoras. Patrocinamos a defesa e o interesse das instituições e profissionais de saúde em processos judiciais, administrativos e sindicâncias, incluindo temas de responsabilidade civil, infração ético-disciplinar, responsabilidades criminais e administrativas.\n\nElaboramos projetos customizados de adequação e otimização de funcionalidades, além da análise, revisão e elaboração de contratos e documentos pertinentes ao setor (termos de consentimento, prontuários, entre outros).'
 },
 {
   titulo: 'DIREITO EDUCACIONAL',
   icon: 'fas fa-graduation-cap',
-  descricao: 'Assessoria a instituições de ensino e resolução de conflitos educacionais.'
+  descricao: 'Prestamos assessoria jurídica para instituições de ensino por meio de elaboração de pareceres e respostas a consultas relativas à legislação educacional. Orientamos e elaboramos regimentos dos estabelecimentos educacionais e promovemos a adequação normativa.\n\nAssessoramos e acompanhamos a obtenção dos documentos regulatórios de instituições de ensino e seus cursos (credenciamentos, recredenciamentos, autorizações e reconhecimentos de cursos). Elaboramos programas em conformidade com a legislação educacional e com as exigências dos órgãos regulamentadores e de supervisão (MEC e Secretarias Estaduais de Educação). Também atuamos em processos judiciais e administrativos representando as instituições de ensino.'
 },
 {
   titulo: 'COMPLIANCE, ÉTICA CORPORATIVA E ESG',
   icon: 'fas fa-shield-alt',
-  descricao: 'Programas de integridade, governança sustentável e adequação regulatória.'
+  descricao: 'Implantamos sistemas de gestão anticorrupção, ambiental, consumerista, de proteção da privacidade e segurança da informação, mediante a realização de diagnóstico organizacional. Promovemos a criação de programa de compliance adequado ao negócio, incluindo mapeamento de riscos de desatendimento às leis aplicáveis. Elaboramos Códigos de Conduta, Regimentos Internos, Matriz Raci, estruturação de Comitê de Ética ou de Oficial de compliance. Realizamos treinamentos in company, entre outras ações que compõem o programa.\n\nAliado ao programa de compliance, atuamos também na implantação de estratégias de ESG com ações relacionadas ao gerenciamento ambiental, crescimento econômico sustentável, qualidade e segurança do ambiente de trabalho, programas de construção de carreira, diversidade e pluralidade.'
 },
-{
-  titulo: 'PROTEÇÃO DA PRIVACIDADE',
-  icon: 'fas fa-lock',
-  descricao: 'LGPD, proteção de dados pessoais e segurança da informação.'
-},
+
 {
   titulo: 'RELAÇÕES DE CONSUMO',
   icon: 'fas fa-handshake',
-  descricao: 'Defesa de direitos do consumidor e consultoria para empresas em CDC.'
+  descricao: 'Prestamos consultoria preventiva para a elaboração e revisão de contratos e práticas comerciais de fornecimento de produtos e serviços, para adequação ao regramento do Código de Defesa do Consumidor.\n\nAssessoramos clientes na elaboração de Termos de Uso de Serviços em plataformas digitais, de Termos de Garantia de Produtos e Serviços levando em conta os limites de responsabilidade civil legalmente estabelecidos.\n\nPrestamos consultoria também sobre questões jurídicas relacionadas às estratégias de marketing, incluindo formas de captação de clientes, execução de campanhas publicitárias e termos de cessão de imagens, além de representação dos clientes em processos judiciais ou administrativos, inclusive perante o PROCON.'
 }
 
 ])
@@ -1206,8 +1306,8 @@ onUnmounted(() => {
 
 /* Equipe Section */
 .equipe {
-  padding: 0 0 3rem;
-  background: #ffffff;
+  padding: 3rem 0 3rem;
+  background: #d4e0ec;
 }
 
 .equipe-subtitle {
@@ -1357,6 +1457,7 @@ onUnmounted(() => {
   line-height: 1.6;
   margin-bottom: 1rem;
   font-size: 0.95rem;
+  text-align: justify;
 }
 
 .equipe-especialidades {
@@ -1445,34 +1546,31 @@ onUnmounted(() => {
 
 /* Áreas de Atuação Section */
 .areas {
-  padding: 2rem 0 6rem 0;
-  background-image: linear-gradient(rgba(255,255,255,0.0), rgba(255,255,255,0.0)), url('/Planet2.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  padding: 3rem 0 6rem 0;
+  background: #ffffff;
 }
 
 .areas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3.5rem;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1rem;
+  margin-top: 5rem;
 }
 
 .area-card {
-  background: rgba(255, 255, 255, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #c9a961;
+  border-radius: 4px;
   padding: 2rem 1.5rem;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(15px);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(201, 169, 97, 0.15);
+  transform: translateY(-2px);
 }
 
 .area-card::before {
@@ -1480,41 +1578,38 @@ onUnmounted(() => {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(201, 169, 97, 0.1) 0%, rgba(0, 27, 183, 0.1) 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 1;
+  width: 4px;
+  height: 100%;
+  background: #c9a961;
+  transition: width 0.3s ease;
+  z-index: 0;
 }
 
 .area-card:hover::before {
-  opacity: 1;
+  width: 4px;
 }
 
 .area-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  border-color: #c9a961;
-  box-shadow: 0 15px 40px rgba(201, 169, 97, 0.3);
+  box-shadow: 0 6px 16px rgba(201, 169, 97, 0.25);
+  transform: translateY(-4px);
 }
 
 .area-icon {
   position: relative;
   z-index: 2;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .area-icon i {
-  font-size: 2.5rem;
-  color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-size: 2rem;
+  color: #b8941f;
   transition: all 0.3s ease;
+  transform: scale(1.05);
 }
 
 .area-card:hover .area-icon i {
-  color: #c9a961;
+  color: #a8841a;
   transform: scale(1.1);
-  text-shadow: 0 4px 12px rgba(201, 169, 97, 0.4);
 }
 
 .area-title {
@@ -1522,21 +1617,26 @@ onUnmounted(() => {
   z-index: 2;
   font-size: 1rem;
   font-weight: 600;
-  color: #ffffff;
-  margin: 0;
-  line-height: 1.2;
+  color: #2c3e50;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.3;
   transition: color 0.3s ease;
-  word-wrap: normal;
-  overflow-wrap: normal;
-  white-space: normal;
-  text-align: center;
-  max-width: 100%;
-  padding: 0 0.5rem;
-  display: block;
 }
 
 .area-card:hover .area-title {
-  color: #ffffff;
+  color: #2c3e50;
+}
+
+.area-title-line {
+  width: 40px;
+  height: 2px;
+  background: #c9a961;
+  margin: 0 auto;
+  transition: width 0.3s ease;
+}
+
+.area-card:hover .area-title-line {
+  width: 60px;
 }
 
 
@@ -1819,15 +1919,28 @@ onUnmounted(() => {
     max-width: none;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .equipe-carousel-container::-webkit-scrollbar {
+    display: none;
   }
 
   .equipe-member {
     flex: 0 0 150px;
     min-width: 150px;
+    scroll-snap-align: start;
   }
 
   .equipe-carousel {
     gap: 0;
+    transform: none !important;
+    will-change: auto;
   }
 
   .equipe-photo-container {
@@ -1853,9 +1966,9 @@ onUnmounted(() => {
   }
 
   .areas-grid {
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
-    padding: 0 0.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+    margin-top: 4rem;
   }
   
   .area-card {
@@ -1863,7 +1976,7 @@ onUnmounted(() => {
   }
   
   .area-icon i {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
   
   .area-title {
@@ -1925,15 +2038,28 @@ onUnmounted(() => {
     max-width: none;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .equipe-carousel-container::-webkit-scrollbar {
+    display: none;
   }
 
   .equipe-member {
     flex: 0 0 120px;
     min-width: 120px;
+    scroll-snap-align: start;
   }
 
   .equipe-carousel {
     gap: 0;
+    transform: none !important;
+    will-change: auto;
   }
 
   .equipe-photo-container {
@@ -1982,8 +2108,8 @@ onUnmounted(() => {
 
   .areas-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    padding: 0 0.25rem;
+    gap: 2rem;
+    margin-top: 3.5rem;
   }
   
   .area-card {
@@ -1991,12 +2117,12 @@ onUnmounted(() => {
   }
   
   .area-icon i {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
   
   .area-title {
-    font-size: 0.85rem;
-    line-height: 1.1;
+    font-size: 0.9rem;
+    line-height: 1.2;
   }
 
   .section-title {
@@ -2145,6 +2271,7 @@ onUnmounted(() => {
   color: #4a5568;
   line-height: 1.6;
   margin-bottom: 2rem;
+  text-align: justify;
 }
 
 .modal-member-specialties ul {
@@ -2291,6 +2418,7 @@ onUnmounted(() => {
   line-height: 1.6;
   font-size: 1rem;
   margin: 0;
+  white-space: pre-line;
 }
 
 /* Mobile Area Modal */
@@ -2599,9 +2727,28 @@ onUnmounted(() => {
     padding: 4rem 0;
   }
   
+  .blog-carousel-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .blog-carousel-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .blog-carousel {
+    transform: none !important;
+    will-change: auto;
+  }
+  
   .blog-card {
     flex: 0 0 280px;
     min-width: 280px;
+    scroll-snap-align: start;
   }
   
   .blog-image {
@@ -2652,9 +2799,28 @@ onUnmounted(() => {
 }
 
 @media (max-width: 480px) {
+  .blog-carousel-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .blog-carousel-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .blog-carousel {
+    transform: none !important;
+    will-change: auto;
+  }
+
   .blog-card {
     flex: 0 0 250px;
     min-width: 250px;
+    scroll-snap-align: start;
   }
   
   .blog-image {
