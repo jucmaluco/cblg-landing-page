@@ -444,7 +444,7 @@ Aliando técnica e pragmatismo, assessora empresas nacionais e estrangeiras na e
     email: 'rgama@cblg.adv.br'
   },
   {
-    nome: 'Marcelo Freitas Ferreira de Oliveira',
+    nome: 'Marcelo Ferreira de Oliveira',
     cargo: 'Sócio',
     foto: '/marcelo_freitas.jpeg',
     bio: `Advogado com atuação predominante em direito de família e das sucessões, além de ampla experiência em contencioso cível e imobiliário de alta complexidade.
@@ -590,7 +590,7 @@ const areas = ref([
   descricao: 'Atuamos em processos administrativos e judiciais sempre em favor dos direitos dos contribuintes, seja representando empresas e pessoas físicas em demandas promovidas pelo Poder Público, seja propondo as ações competentes para a defesa dos referidos direitos. Também prestamos consultoria tributária, incluindo assessoria para planejamento tributário e de governança para empresas e pessoas físicas.'
 },
 {
-  titulo: 'PLANEJAMENTO SUCESSÓRIO E PATRIMONIAL DE EMPRESAS FAMILIARES',
+  titulo: 'PLANEJAMENTO SUCESSÓRIO E PATRIMONIAL',
   icon: 'fas fa-users',
   descricao: 'Prestamos assessoria para planejamento e implantação personalizada de sucessão e gestão patrimonial em empresas familiares. Buscamos a harmonização de interesses das partes envolvidas à luz dos princípios de governança corporativa e oferecemos as melhores soluções a partir da legislação cível, societária e tributária.'
 },
@@ -1201,32 +1201,35 @@ onUnmounted(() => {
   font-family: 'Roboto Mono', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 2.5rem;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin: 0 auto 1.5rem;
   color: #2c3e50;
   position: relative;
   padding-bottom: 1rem;
   font-weight: 600;
   letter-spacing: 0.5px;
+  display: block;
+  width: fit-content;
 }
 .section-title-areas{
   font-family: 'Roboto Mono', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 2.5rem;
   text-align: center;
-  margin-bottom: 3rem;
+  margin: 0 auto 3rem;
   color: #f9fbfd;
   position: relative;
   padding-bottom: 1rem;
   font-weight: 600;
   letter-spacing: 0.5px;
+  display: block;
+  width: fit-content;
 }
 
 .section-title-areas::after {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
+  left: 10%;
+  width: 80%;
   height: 3px;
   background: #c9a961;
   border-radius: 2px;
@@ -1236,9 +1239,8 @@ onUnmounted(() => {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
+  left: 10%;
+  width: 80%;
   height: 3px;
   background: #c9a961;
   border-radius: 2px;
@@ -1307,28 +1309,29 @@ onUnmounted(() => {
 /* Equipe Section */
 .equipe {
   padding: 3rem 0 3rem;
-  background: #d4e0ec;
+  background: linear-gradient(135deg, #d1d9e0 0%, #e2e8f0 30%, #f1f3f4 70%, #d8e2ea 100%);
 }
 
 .equipe-subtitle {
   font-family: 'Roboto Mono', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 2.5rem;
   text-align: center;
-  margin-bottom: 2rem;
+  margin: 0 auto 2rem;
   color: #2c3e50;
   position: relative;
   padding-bottom: 1rem;
   font-weight: 600;
   letter-spacing: 0.5px;
+  display: block;
+  width: fit-content;
 }
 
 .equipe-subtitle::after {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
+  left: 10%;
+  width: 80%;
   height: 3px;
   background: #c9a961;
   border-radius: 2px;
@@ -1955,9 +1958,7 @@ onUnmounted(() => {
   }
 
   .equipe-nav-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
+    display: none;
   }
 
   .valores-grid {
@@ -1995,6 +1996,10 @@ onUnmounted(() => {
   }
 
   .section-title {
+    font-size: 2rem;
+  }
+
+  .equipe-subtitle {
     font-size: 2rem;
   }
 }
@@ -2101,9 +2106,11 @@ onUnmounted(() => {
   }
 
   .equipe-nav-btn {
-    width: 35px;
-    height: 35px;
-    font-size: 0.9rem;
+    display: none;
+  }
+
+  .equipe {
+    padding: 2rem 0 1.5rem;
   }
 
   .areas-grid {
@@ -2126,6 +2133,10 @@ onUnmounted(() => {
   }
 
   .section-title {
+    font-size: 1.8rem;
+  }
+
+  .equipe-subtitle {
     font-size: 1.8rem;
   }
 }
@@ -2764,13 +2775,8 @@ onUnmounted(() => {
   }
   
   .blog-nav-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
+    display: none;
   }
-  
-  .blog-nav-btn.prev { left: -20px; }
-  .blog-nav-btn.next { right: -20px; }
   
   .modal-header {
     flex-direction: column;
@@ -2836,13 +2842,8 @@ onUnmounted(() => {
   }
   
   .blog-nav-btn {
-    width: 35px;
-    height: 35px;
-    font-size: 0.9rem;
+    display: none;
   }
-  
-  .blog-nav-btn.prev { left: -17px; }
-  .blog-nav-btn.next { right: -17px; }
   
   .modal-blog-photo {
     width: 80px;
