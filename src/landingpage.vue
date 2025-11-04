@@ -1645,7 +1645,7 @@ onUnmounted(() => {
 
 /* Contato Section */
 .contato {
-  padding: 6rem 0;
+  padding: 3rem 0;
   background: #ffffff;
 }
 
@@ -2478,7 +2478,7 @@ onUnmounted(() => {
 
 /* Blog Preview Section */
 .blog-preview {
-  padding: 6rem 0;
+  padding: 3rem 0;
   background: linear-gradient(135deg, #d1d9e0 0%, #e2e8f0 30%, #f1f3f4 70%, #d8e2ea 100%);
 }
 
