@@ -68,7 +68,6 @@
                   <img :src="membro.foto" :alt="membro.nome" class="equipe-photo">
                 </div>
                 <h3 class="equipe-nome">{{ membro.nome }}</h3>
-                <p class="equipe-cargo">{{ membro.cargo }}</p>
                 
                 <transition name="slide-down">
                   <div v-if="selectedMembro === index" class="equipe-details">
@@ -282,7 +281,6 @@
           </div>
           <div class="modal-member-info">
             <h2 class="modal-member-name">{{ selectedTeamMember.nome }}</h2>
-            <p class="modal-member-role">{{ selectedTeamMember.cargo }}</p>
             <p class="modal-member-email">{{ selectedTeamMember.email || getEmail(selectedTeamMember.nome) }}</p>
             <a :href="selectedTeamMember.linkedin" target="_blank" rel="noopener" class="modal-linkedin-link">
               <i class="fab fa-linkedin"></i>
@@ -389,7 +387,6 @@ const paragraphs = (text) =>
 const equipe = ref([
   {
     nome: 'André Castello Branco',
-    cargo: 'Sócio-fundador',
     foto: '/foto_andré_castello_branco.jpg',
     bio: `Especialista em Direito Societário, André atua na mediação de conflitos empresariais, negociações estratégicas e consultoria jurídica voltada ao planejamento e à estruturação societária e de negócios. Sua prática combina visão jurídica e estratégia empresarial, assessorando companhias e seus sócios em processos de reorganização, estruturação de governança e resolução de disputas societárias.
 
@@ -407,7 +404,6 @@ Também possui experiência como Conselheiro Fiscal, agregando valor à gestão 
   },
   {
     nome: 'Alexandre Lobosco',
-    cargo: 'Sócio-fundador',
     foto: '/foto_alexandre_lobosco.jpg',
     bio: `Atua nas áreas de Direito Tributário — consultivo e contencioso —, Direito Societário e Planejamento Patrimonial e Sucessório. No campo tributário, assessora empresas e grupos econômicos em planejamento fiscal, reorganizações societárias com impactos tributários, defesa em litígios administrativos e judiciais e implementação de programas de compliance tributário.
 
@@ -429,7 +425,6 @@ Combina sólida formação acadêmica com prática profissional pautada pela pre
   },
   {
     nome: 'Rodrigo Gama Dantas',
-    cargo: 'Sócio-fundador',
     foto: '/foto_rodrigo_gama_dantas.jpg',
     bio: `Responsável pelo contencioso cível e empresarial do escritório, Rodrigo Gama possui ampla experiência em litígios que tramitam tanto no Poder Judiciário quanto em Câmaras Arbitrais, tendo atuado na defesa de clientes de diversos setores da economia — como imobiliário, saúde, segurança patrimonial, educação, obras e saneamento, entre outros.
 
@@ -445,7 +440,6 @@ Aliando técnica e pragmatismo, assessora empresas nacionais e estrangeiras na e
   },
   {
     nome: 'Marcelo Ferreira de Oliveira',
-    cargo: 'Sócio',
     foto: '/marcelo_freitas.jpeg',
     bio: `Advogado com atuação predominante em direito de família e das sucessões, além de ampla experiência em contencioso cível e imobiliário de alta complexidade.
 
@@ -461,26 +455,41 @@ Autor de livro e artigos nas áreas de literatura e crítica literária, integra
     email: 'moliveira@cblg.adv.br'
   },
   {
-    nome: 'Karina de Lara Lima',
-    cargo: 'Sócia',
-    foto: '/karina_foto.jpeg',
-    bio: `Advogada com sólida trajetória na área Cível, atuando especialmente em demandas indenizatórias e consumeristas.
+    nome: 'Marcia Leardini',
+    foto: '/foto_marcia_leardini.jpg',
+    bio: `Advogada com ampla experiência nas áreas criminal e de compliance. Mestre em Direito Empresarial, com foco de pesquisa em direito penal econômico.
 
-Especialista em Direito de Família e Sucessões, conduz seus casos com sensibilidade, técnica e foco em soluções jurídicas eficazes, conciliando empatia com precisão técnica.
+Professora nas disciplinas de Direito Penal, Processual Penal, Compliance e Proteção de Privacidade na graduação e pós-graduação da Unicuritiba e da FAE Business School.
 
-Participa ativamente de Comissões da OAB/SP e da Subseção de Santo Amaro, contribuindo para o aprimoramento da prática jurídica e para o fortalecimento da advocacia.`,
+É presidente da Comissão de Advogadas Criminalistas da Associação Paranaense de Advogados Criminalistas e atua especialmente em casos envolvendo crimes empresariais, ambientais e de responsabilidade corporativa.`,
     formacao: [
-      'Bacharel em Direito pela Universidade Estadual Paulista - UNESP.',
-      'Pós-graduação em Direito de Família e Sucessões pela Universidade Legale.',
-      'Pós-graduação em Direito Imobiliário pela Universidade Legale.',
-      'Formação como Conciliadora e Mediadora pela Universidade Legale.'
+      'Bacharel em Direito pela Faculdades Integradas Curitiba.',
+      'Mestre em Direito Empresarial pela Unicuritiba'
     ],
-    linkedin: 'https://www.linkedin.com/in/karina-lara-lima-kll201922/',
-    email: 'klima@cblg.adv.br'
+    linkedin: 'https://www.linkedin.com/in/marcia-leardini-a8272321b/',
+    email: 'mleardini@cblg.adv.br'
+  },
+  {
+    nome: 'Michelle Gironda Cabrera',
+    foto: '/Michelle_Gironda_Cabrera.jpg',
+    bio: `Advogada criminalista e diretora do núcleo criminal do CBLG Advogados. Doutora em Direito Socioeconômico e Desenvolvimento pela Pontifícia Universidade Católica do Paraná.
+
+Professora de Direito Processual Penal e Penal no Centro Universitário Curitiba e na Faculdade de Pinhais, além de coordenadora do curso de pós-graduação em Ciências Criminais da UniFapi.
+
+Leciona ainda na Escola Paranaense de Direito, na Defensoria Pública do Estado de São Paulo e na Escola Superior de Advocacia da OAB/MG. Sua trajetória combina sólida formação acadêmica com reconhecida atuação pública e institucional.`,
+    formacao: [
+      'Bacharel em Direito pela Pontifícia Universidade Católica do Paraná',
+      'Mestre em Direito Empresarial e Cidadania pelo Centro Universitário Curitiba.',
+      'Doutora em Direito Socioeconômico e Desenvolvimento pela Pontifícia Universidade Católica do Paraná.',
+      'Pós-doutoranda pela Universidade Federal do Paraná.',
+      'Especialista em Direito Criminal pelo Centro Universitário Curitiba.',
+      'Especialista em Ciências Jurídicas pela Fundação Escola do Ministério Público do Estado do Paraná.'
+    ],
+    linkedin: 'https://www.linkedin.com/in/michelle-gironda-cabrera-a1637a228/',
+    email: 'mcabrera@cblg.adv.br'
   },
   {
     nome: 'Ana Celia Guarnieri',
-    cargo: 'Sócia',
     foto: '/ana_celia_foto.jpg',
     bio: `Advogada com atuação nas áreas cível, empresarial e societária, e sólida expertise em direito imobiliário. Sua trajetória combina visão estratégica, profundidade técnica e experiência relevante tanto na iniciativa privada quanto no setor público.
 
@@ -499,7 +508,6 @@ Nos Estados Unidos, foi consultora de advocacy e políticas públicas da America
   },
   {
     nome: 'Miguel Barbado Neto',
-    cargo: 'Sócio',
     foto: '/foto_miguel_barbado_neto.jpg',
     bio: `Especialista em Direito Tributário, Miguel Barbado Neto atua em litígios judiciais e administrativos envolvendo tributos federais, estaduais e municipais.
 
@@ -514,40 +522,21 @@ Destaca-se pela sua atuação técnica, criteriosa e orientada à segurança jur
     email: 'mbarbado@cblg.adv.br'
   },
   {
-    nome: 'Marcia Leardini',
-    cargo: 'Sócia',
-    foto: '/foto_marcia_leardini.jpg',
-    bio: `Advogada com ampla experiência nas áreas criminal e de compliance. Mestre em Direito Empresarial, com foco de pesquisa em direito penal econômico.
+    nome: 'Karina de Lara Lima',
+    foto: '/karina_foto.jpeg',
+    bio: `Advogada com sólida trajetória na área Cível, atuando especialmente em demandas indenizatórias e consumeristas.
 
-Professora nas disciplinas de Direito Penal, Processual Penal, Compliance e Proteção de Privacidade na graduação e pós-graduação da Unicuritiba e da FAE Business School.
+Especialista em Direito de Família e Sucessões, conduz seus casos com sensibilidade, técnica e foco em soluções jurídicas eficazes, conciliando empatia com precisão técnica.
 
-É presidente da Comissão de Advogadas Criminalistas da Associação Paranaense de Advogados Criminalistas e atua especialmente em casos envolvendo crimes empresariais, ambientais e de responsabilidade corporativa.`,
+Participa ativamente de Comissões da OAB/SP e da Subseção de Santo Amaro, contribuindo para o aprimoramento da prática jurídica e para o fortalecimento da advocacia.`,
     formacao: [
-      'Bacharel em Direito pela Faculdades Integradas Curitiba.',
-      'Mestre em Direito Empresarial pela Unicuritiba'
+      'Bacharel em Direito pela Universidade Estadual Paulista - UNESP.',
+      'Pós-graduação em Direito de Família e Sucessões pela Universidade Legale.',
+      'Pós-graduação em Direito Imobiliário pela Universidade Legale.',
+      'Formação como Conciliadora e Mediadora pela Universidade Legale.'
     ],
-    linkedin: 'https://www.linkedin.com/in/marcia-leardini-a8272321b/',
-    email: 'mleardini@cblg.adv.br'
-  },
-  {
-    nome: 'Michelle Gironda Cabrera',
-    cargo: 'Sócia',
-    foto: '/Michelle_Gironda_Cabrera.jpg',
-    bio: `Advogada criminalista e diretora do núcleo criminal do CBLG Advogados. Doutora em Direito Socioeconômico e Desenvolvimento pela Pontifícia Universidade Católica do Paraná.
-
-Professora de Direito Processual Penal e Penal no Centro Universitário Curitiba e na Faculdade de Pinhais, além de coordenadora do curso de pós-graduação em Ciências Criminais da UniFapi.
-
-Leciona ainda na Escola Paranaense de Direito, na Defensoria Pública do Estado de São Paulo e na Escola Superior de Advocacia da OAB/MG. Sua trajetória combina sólida formação acadêmica com reconhecida atuação pública e institucional.`,
-    formacao: [
-      'Bacharel em Direito pela Pontifícia Universidade Católica do Paraná',
-      'Mestre em Direito Empresarial e Cidadania pelo Centro Universitário Curitiba.',
-      'Doutora em Direito Socioeconômico e Desenvolvimento pela Pontifícia Universidade Católica do Paraná.',
-      'Pós-doutoranda pela Universidade Federal do Paraná.',
-      'Especialista em Direito Criminal pelo Centro Universitário Curitiba.',
-      'Especialista em Ciências Jurídicas pela Fundação Escola do Ministério Público do Estado do Paraná.'
-    ],
-    linkedin: 'https://www.linkedin.com/in/michelle-gironda-cabrera-a1637a228/',
-    email: 'mcabrera@cblg.adv.br'
+    linkedin: 'https://www.linkedin.com/in/karina-lara-lima-kll201922/',
+    email: 'klima@cblg.adv.br'
   }
 ])
 
@@ -1436,15 +1425,6 @@ onUnmounted(() => {
   line-height: 1.3;
 }
 
-.equipe-cargo {
-  font-size: 0.9rem;
-  color: #c9a961;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 500;
-  margin-bottom: 1rem;
-}
-
 .equipe-details {
   background: #f8f9fa;
   padding: 1.5rem;
@@ -2084,10 +2064,6 @@ onUnmounted(() => {
     font-size: 0.95rem;
   }
 
-  .equipe-cargo {
-    font-size: 0.8rem;
-  }
-
   .equipe-details {
     padding: 0.75rem;
     font-size: 0.8rem;
@@ -2222,15 +2198,6 @@ onUnmounted(() => {
   font-size: 1.8rem;
   font-weight: 700;
   color: #2c3e50;
-  margin-bottom: 0.5rem;
-}
-
-.modal-member-role {
-  font-size: 1.1rem;
-  color: #c9a961;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
