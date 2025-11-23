@@ -1415,6 +1415,7 @@ onUnmounted(() => {
 
 .equipe-photo.miguel-img {
   object-position: center 20%;
+  transform: scale(1.15);
 }
 
 .equipe-photo-container:hover .equipe-photo {
