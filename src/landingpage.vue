@@ -62,10 +62,10 @@
               <div v-for="(membro, index) in equipe" :key="index" class="equipe-member">
                 <div 
                   class="equipe-photo-container" 
-                  :class="{ active: selectedMembro === index }"
+                  :class="{ active: selectedMembro === index, 'miguel-photo': membro.nome === 'Miguel Barbado Neto' }"
                   @click="openTeamModal(membro)"
                 >
-                  <img :src="membro.foto" :alt="membro.nome" class="equipe-photo">
+                  <img :src="membro.foto" :alt="membro.nome" class="equipe-photo" :class="{ 'miguel-img': membro.nome === 'Miguel Barbado Neto' }">
                 </div>
                 <h3 class="equipe-nome">{{ membro.nome }}</h3>
                 
@@ -1411,6 +1411,10 @@ onUnmounted(() => {
   object-position: center top;
   filter: grayscale(100%);
   transition: filter 0.3s ease;
+}
+
+.equipe-photo.miguel-img {
+  object-position: center 20%;
 }
 
 .equipe-photo-container:hover .equipe-photo {
