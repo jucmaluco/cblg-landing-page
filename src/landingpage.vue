@@ -189,7 +189,7 @@
               <h4>Unidade São Paulo</h4>
               <div class="info-item">
                 <i class="fas fa-map-marker-alt"></i>
-                <p>Rua Ferreira de Araújo, 221, 1º Andar<br>05428-000 - Pinheiros - São Paulo - SP</p>
+                <p>Rua Ferreira de Araújo, 221, 7º Andar<br>05428-000 - Pinheiros - São Paulo - SP</p>
               </div>
               <div class="info-item">
                 <i class="fas fa-phone"></i>
@@ -200,7 +200,7 @@
               <h4>Unidade Curitiba</h4>
               <div class="info-item">
                 <i class="fas fa-map-marker-alt"></i>
-                <p>Rua Buenos Aires, 444, Cj. 12<br>80250-070 - Batel - Curitiba - PR</p>
+                <p>R. Francisco Rocha, 62 - conj.703<br>80420-130 - Batel - Curitiba - PR</p>
               </div>
               <div class="info-item">
                 <i class="fas fa-phone"></i>
@@ -508,7 +508,7 @@ Nos Estados Unidos, foi consultora de advocacy e políticas públicas da America
   },
   {
     nome: 'Miguel Barbado Neto',
-    foto: '/foto_miguel_barbado_neto.jpg',
+    foto: '/foto_miguel_barbado_neto.png',
     bio: `Especialista em Direito Tributário, Miguel Barbado Neto atua em litígios judiciais e administrativos envolvendo tributos federais, estaduais e municipais.
 
 Possui experiência em consultoria tributária e operações de compra e venda de imóveis urbanos e rurais, assessorando clientes na estruturação de negócios seguros e eficientes sob a ótica fiscal.
@@ -1298,7 +1298,7 @@ onUnmounted(() => {
 /* Equipe Section */
 .equipe {
   padding: 3rem 0 3rem;
-  background: linear-gradient(135deg, #d1d9e0 0%, #e2e8f0 30%, #f1f3f4 70%, #d8e2ea 100%);
+  background: #f0f5f8;
 }
 
 .equipe-subtitle {
@@ -1349,7 +1349,7 @@ onUnmounted(() => {
 
 .equipe-carousel {
   display: flex;
-  gap: 0;
+  gap: 0.75rem;
   transition: transform 0.5s ease;
   will-change: transform;
 }
@@ -1921,7 +1921,7 @@ onUnmounted(() => {
   }
 
   .equipe-carousel {
-    gap: 0;
+    gap: 0.5rem;
     transform: none !important;
     will-change: auto;
   }
@@ -2042,7 +2042,7 @@ onUnmounted(() => {
   }
 
   .equipe-carousel {
-    gap: 0;
+    gap: 0.5rem;
     transform: none !important;
     will-change: auto;
   }
