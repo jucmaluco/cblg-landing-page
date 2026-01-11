@@ -386,7 +386,7 @@ const paragraphs = (text) =>
 
 const equipe = ref([
   {
-    nome: 'André Castello Branco',
+    nome: 'André Castello Branco Colotto',
     foto: '/foto_andré_castello_branco.jpg',
     bio: `Especialista em Direito Societário, André atua na mediação de conflitos empresariais, negociações estratégicas e consultoria jurídica voltada ao planejamento e à estruturação societária e de negócios. Sua prática combina visão jurídica e estratégia empresarial, assessorando companhias e seus sócios em processos de reorganização, estruturação de governança e resolução de disputas societárias.
 
