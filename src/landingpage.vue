@@ -207,6 +207,17 @@
                 <p>Tel.: +55 (11) 3817-4001</p>
               </div>
             </div>
+            <div class="unidade">
+              <h4>Unidade Rio de Janeiro</h4>
+              <div class="info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>Rua Visconde de Piraja, 414, sala 718<br>22410-002 - Ipanema - Rio de Janeiro - RJ</p>
+              </div>
+              <div class="info-item">
+                <i class="fas fa-phone"></i>
+                <p>Tel.: +55 (11) 3817-4001</p>
+              </div>
+            </div>
           </div>
           <div class="contato-img-wrapper">
             <img src="/foto_itens_cblg.jpeg" alt="Foto Caderno e Caneta BLG" class="contato-image" />
@@ -282,7 +293,7 @@
           <div class="modal-member-info">
             <h2 class="modal-member-name">{{ selectedTeamMember.nome }}</h2>
             <p class="modal-member-email">{{ selectedTeamMember.email || getEmail(selectedTeamMember.nome) }}</p>
-            <a :href="selectedTeamMember.linkedin" target="_blank" rel="noopener" class="modal-linkedin-link">
+            <a v-if="selectedTeamMember.linkedin" :href="selectedTeamMember.linkedin" target="_blank" rel="noopener" class="modal-linkedin-link">
               <i class="fab fa-linkedin"></i>
               LinkedIn
             </a>
@@ -537,6 +548,18 @@ Participa ativamente de Comissões da OAB/SP e da Subseção de Santo Amaro, con
     ],
     linkedin: 'https://www.linkedin.com/in/karina-lara-lima-kll201922/',
     email: 'klima@cblg.adv.br'
+  },
+  {
+    nome: 'Giselle Gonçalves Seabra Fontainha',
+    foto: '/giselle.jpeg',
+    bio: `Advogada graduada em Direito pela Universidade Federal do Rio de Janeiro (UFRJ) e mestre em Direito Público, com ênfase em Direito Administrativo e Regulação, pela Universite de Montpellier 1 (UM1), França.
+
+Possui ampla experiência em consultoria nas áreas de Direito Administrativo e contratos públicos, com especialização em Direito da Saúde, regulação e Direito do Consumidor.`,
+    formacao: [
+      'Bacharel em Direito pela Universidade Federal do Rio de Janeiro (UFRJ).',
+      'Mestre em Direito Público, com ênfase em Direito Administrativo e Regulação, pela Universite de Montpellier 1 (UM1), França.',
+      'Atuação especializada em Direito da Saúde, regulação e Direito do Consumidor.'
+    ]
   }
 ])
 
@@ -2956,4 +2979,3 @@ onUnmounted(() => {
   }
 }
 </style>
-
