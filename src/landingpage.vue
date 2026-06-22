@@ -550,7 +550,7 @@ Participa ativamente de Comissões da OAB/SP e da Subseção de Santo Amaro, con
     email: 'klima@cblg.adv.br'
   },
   {
-    nome: 'Giselle Gonçalves Seabra Fontainha',
+    nome: 'Giselle Seabra Fontainha',
     foto: '/giselle.jpeg',
     bio: `Advogada graduada em Direito pela Universidade Federal do Rio de Janeiro (UFRJ) e mestre em Direito Público, com ênfase em Direito Administrativo e Regulação, pela Universite de Montpellier 1 (UM1), França.
 
