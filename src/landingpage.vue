@@ -558,7 +558,8 @@ Possui ampla experiência em consultoria nas áreas de Direito Administrativo e 
     formacao: [
       'Bacharel em Direito pela Universidade Federal do Rio de Janeiro (UFRJ).',
       'Mestre em Direito Público, com ênfase em Direito Administrativo e Regulação, pela Universite de Montpellier 1 (UM1), França.'
-    ]
+    ],
+    email: 'gfontainha@cblg.com'
   }
 ])
 
