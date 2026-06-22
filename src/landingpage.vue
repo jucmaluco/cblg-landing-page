@@ -557,8 +557,7 @@ Participa ativamente de Comissões da OAB/SP e da Subseção de Santo Amaro, con
 Possui ampla experiência em consultoria nas áreas de Direito Administrativo e contratos públicos, com especialização em Direito da Saúde, regulação e Direito do Consumidor.`,
     formacao: [
       'Bacharel em Direito pela Universidade Federal do Rio de Janeiro (UFRJ).',
-      'Mestre em Direito Público, com ênfase em Direito Administrativo e Regulação, pela Universite de Montpellier 1 (UM1), França.',
-      'Atuação especializada em Direito da Saúde, regulação e Direito do Consumidor.'
+      'Mestre em Direito Público, com ênfase em Direito Administrativo e Regulação, pela Universite de Montpellier 1 (UM1), França.'
     ]
   }
 ])
