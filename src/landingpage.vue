@@ -552,9 +552,13 @@ Participa ativamente de Comissões da OAB/SP e da Subseção de Santo Amaro, con
   {
     nome: 'Giselle Seabra Fontainha',
     foto: '/giselle.jpeg',
-    bio: `Advogada graduada em Direito pela Universidade Federal do Rio de Janeiro (UFRJ) e mestre em Direito Público, com ênfase em Direito Administrativo e Regulação, pela Universite de Montpellier 1 (UM1), França.
+    bio: `Advogada com atuação nas áreas de Direito Administrativo, contratos públicos, Direito Regulatório, Direito da Saúde e Direito do Consumidor. Presta consultoria jurídica a empresas, entidades e particulares em matérias que envolvem a Administração Pública, setores regulados e relações de consumo.
 
-Possui ampla experiência em consultoria nas áreas de Direito Administrativo e contratos públicos, com especialização em Direito da Saúde, regulação e Direito do Consumidor.`,
+Possui ampla experiência na análise e estruturação de contratos públicos, licitações, processos administrativos e demais questões relacionadas ao relacionamento com órgãos e entidades governamentais.
+
+Sua prática também abrange temas regulatórios, com foco na interpretação de normas setoriais, no cumprimento de obrigações legais e regulatórias, na avaliação de riscos e na elaboração de estratégias juridicamente seguras para atividades sujeitas à fiscalização estatal.
+
+No campo do Direito da Saúde e do Direito do Consumidor, atua em questões envolvendo prestação de serviços, responsabilidade de fornecedores, relações contratuais, proteção dos usuários e conformidade regulatória.`,
     formacao: [
       'Bacharel em Direito pela Universidade Federal do Rio de Janeiro (UFRJ).',
       'Mestre em Direito Público, com ênfase em Direito Administrativo e Regulação, pela Universite de Montpellier 1 (UM1), França.'
