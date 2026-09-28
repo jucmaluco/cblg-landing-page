@@ -18,6 +18,17 @@ const routes = [
     path: '/privacy-policy',
     name: 'PrivacyPolicy',
     component: PrivacyPolicy
+  },
+  // Redesign candidates for review in staging; lazy-loaded so the current site stays unaffected
+  {
+    path: '/v1',
+    name: 'HomeV1',
+    component: () => import('./redesign/LandingV1.vue')
+  },
+  {
+    path: '/v2',
+    name: 'HomeV2',
+    component: () => import('./redesign/LandingV2.vue')
   }
 ]
 
