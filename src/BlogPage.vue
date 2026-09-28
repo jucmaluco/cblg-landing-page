@@ -4,25 +4,26 @@
     <nav class="navbar" :class="{ scrolled: isScrolled }">
       <div class="nav-container">
         <a href="/" class="nav-logo">
-          <img src="/logo.png" alt="CBLG Advogados" class="logo-img">
+          <img src="/logo-25-anos.png" alt="CBLG Advogados" class="logo-img">
         </a>
-        <button class="nav-toggle" @click="isNavOpen = !isNavOpen" aria-label="Abrir menu">
+        <button class="nav-toggle" @click="isNavOpen = !isNavOpen" :aria-label="t('nav.openMenu')">
           <i class="fas fa-bars"></i>
         </button>
         <ul class="nav-links" :class="{ open: isNavOpen }">
-          <li><a href="/#sobre" @click="isNavOpen = false">SOBRE</a></li>
-          <li><a href="/#equipe" @click="isNavOpen = false">EQUIPE</a></li>
-          <li><a href="/#areas" @click="isNavOpen = false">ÁREAS DE ATUAÇÃO</a></li>
-          <li><a href="/blog" @click="isNavOpen = false">BLOG</a></li>
-          <li><a href="/#contato" @click="isNavOpen = false">CONTATO</a></li>
+          <li><a href="/#sobre" @click="isNavOpen = false">{{ t('nav.about') }}</a></li>
+          <li><a href="/#equipe" @click="isNavOpen = false">{{ t('nav.team') }}</a></li>
+          <li><a href="/#areas" @click="isNavOpen = false">{{ t('nav.areas') }}</a></li>
+          <li><a href="/blog" @click="isNavOpen = false">{{ t('nav.blog') }}</a></li>
+          <li><a href="/#contato" @click="isNavOpen = false">{{ t('nav.contact') }}</a></li>
         </ul>
+        <LanguageToggle :inverted="!isScrolled" />
       </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="blog-hero">
       <div class="blog-hero-content">
-        <h1 class="section-title">NOTÍCIAS CBLG</h1>
+        <h1 class="section-title">{{ t('blog.pageTitle') }}</h1>
       </div>
     </section>
 
@@ -31,15 +32,15 @@
       <div class="container">
         <div v-if="loading" class="loading">
           <div class="loading-spinner"></div>
-          <p>Carregando artigos...</p>
+          <p>{{ t('blog.loading') }}</p>
         </div>
         
         <div v-else-if="error" class="error">
-          <p>{{ error }}</p>
+          <p>{{ t('blog.errorRetry') }}</p>
         </div>
         
         <div v-else-if="posts.length === 0" class="no-posts">
-          <p>Nenhum artigo encontrado.</p>
+          <p>{{ t('blog.empty') }}</p>
         </div>
         
         <div v-else class="posts-grid">
@@ -58,7 +59,7 @@
               </div>
               <h2 class="post-title">{{ post.fields.title }}</h2>
               <p class="post-excerpt">{{ getExcerpt(post.fields.body) }}</p>
-              <a href="#" @click.prevent="viewPost(post)" class="post-link">Ler mais</a>
+              <a href="#" @click.prevent="viewPost(post)" class="post-link">{{ t('blog.readMore') }}</a>
             </div>
           </article>
         </div>
@@ -70,26 +71,26 @@
       <div class="container">
         <div class="footer-content">
           <div class="footer-section">
-            <img src="/logo.png" alt="CBLG Advogados" class="footer-logo">
-            <p>Atuação Integrada e Multidisciplinar</p>
+            <img src="/logo-25-anos-white.png" alt="CBLG Advogados" class="footer-logo">
+            <p>{{ t('footer.tagline') }}</p>
           </div>
           <div class="footer-section">
-            <h4>Links Rápidos</h4>
+            <h4>{{ t('footer.quickLinks') }}</h4>
             <ul>
-              <li><a href="/#sobre">Sobre</a></li>
-              <li><a href="/#equipe">Equipe</a></li>
-              <li><a href="/#areas">Áreas de Atuação</a></li>
-              <li><a href="/blog">Blog</a></li>
+              <li><a href="/#sobre">{{ t('footer.about') }}</a></li>
+              <li><a href="/#equipe">{{ t('footer.team') }}</a></li>
+              <li><a href="/#areas">{{ t('footer.areas') }}</a></li>
+              <li><a href="/blog">{{ t('footer.blog') }}</a></li>
             </ul>
           </div>
           <div class="footer-section">
-            <h4>Informações Legais</h4>
+            <h4>{{ t('footer.legal') }}</h4>
             <ul>
-              <li><a href="/privacy-policy">Política de Privacidade</a></li>
+              <li><a href="/privacy-policy">{{ t('footer.privacy') }}</a></li>
             </ul>
           </div>
           <div class="footer-section">
-            <h4>Siga nas Redes Sociais</h4>
+            <h4>{{ t('footer.social') }}</h4>
             <div class="social-links">
               <a href="https://linkedin.com" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
               <a href="https://instagram.com" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
@@ -98,7 +99,7 @@
           </div>
         </div>
         <div class="footer-bottom">
-          <p>&copy; 2025 Castello Branco, Lobosco & Gama Advogados. Todos os direitos reservados.</p>
+          <p>&copy; 2025 Castello Branco, Lobosco & Gama Advogados. {{ t('footer.rights') }}</p>
         </div>
       </div>
     </footer>
@@ -133,9 +134,15 @@
 
 <script>
 import { createClient } from 'contentful'
+import LanguageToggle from './LanguageToggle.vue'
+import { t, formatDate } from './i18n.js'
 
 export default {
   name: 'BlogPage',
+  components: { LanguageToggle },
+  setup() {
+    return { t, formatDate }
+  },
   data() {
     return {
       posts: [],
@@ -172,17 +179,9 @@ export default {
         this.loading = false
       } catch (error) {
         console.error('Error fetching posts:', error)
-        this.error = 'Erro ao carregar os artigos. Tente novamente mais tarde.'
+        this.error = true
         this.loading = false
       }
-    },
-    formatDate(dateString) {
-      const date = new Date(dateString)
-      return date.toLocaleDateString('pt-BR', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      })
     },
     getExcerpt(text, maxLength = 150) {
       if (text.length <= maxLength) return text
@@ -542,7 +541,6 @@ body {
   width: 100%;
   height: auto;
   margin-bottom: 1rem;
-  filter: brightness(0) invert(1);
   opacity: 0.9;
 }
 
@@ -762,10 +760,6 @@ body {
 @media (max-width: 768px) {
   .navbar { 
     padding: 0.5rem 0;
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
   }
   
   .nav-container { 

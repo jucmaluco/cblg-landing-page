@@ -4,26 +4,27 @@
     <nav class="navbar" :class="{ scrolled: isScrolled }">
       <div class="nav-container">
         <a href="/" class="nav-logo">
-          <img src="/logo.png" alt="CBLG Advogados" class="logo-img">
+          <img src="/logo-25-anos.png" alt="CBLG Advogados" class="logo-img">
         </a>
-        <button class="nav-toggle" @click="isNavOpen = !isNavOpen" aria-label="Abrir menu">
+        <button class="nav-toggle" @click="isNavOpen = !isNavOpen" :aria-label="t('nav.openMenu')">
           <i class="fas fa-bars"></i>
         </button>
         <ul class="nav-links" :class="{ open: isNavOpen }">
-          <li><a href="/#sobre" @click="isNavOpen = false">SOBRE</a></li>
-          <li><a href="/#equipe" @click="isNavOpen = false">EQUIPE</a></li>
-          <li><a href="/#areas" @click="isNavOpen = false">ÁREAS DE ATUAÇÃO</a></li>
-          <li><a href="/blog" @click="isNavOpen = false">BLOG</a></li>
-          <li><a href="/#contato" @click="isNavOpen = false">CONTATO</a></li>
+          <li><a href="/#sobre" @click="isNavOpen = false">{{ t('nav.about') }}</a></li>
+          <li><a href="/#equipe" @click="isNavOpen = false">{{ t('nav.team') }}</a></li>
+          <li><a href="/#areas" @click="isNavOpen = false">{{ t('nav.areas') }}</a></li>
+          <li><a href="/blog" @click="isNavOpen = false">{{ t('nav.blog') }}</a></li>
+          <li><a href="/#contato" @click="isNavOpen = false">{{ t('nav.contact') }}</a></li>
         </ul>
+        <LanguageToggle :inverted="!isScrolled" />
       </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="privacy-hero">
       <div class="container">
-        <h1 class="privacy-title">Política de Privacidade</h1>
-        <p class="privacy-subtitle">Proteção e Tratamento de Dados Pessoais</p>
+        <h1 class="privacy-title">{{ t('privacy.title') }}</h1>
+        <p class="privacy-subtitle">{{ t('privacy.subtitle') }}</p>
       </div>
     </section>
 
@@ -31,6 +32,7 @@
     <section class="privacy-content">
       <div class="container">
         <div class="privacy-text">
+          <template v-if="locale === 'pt'">
           <h2>I – NOSSO OBJETIVO</h2>
           <p>O escritório de advocacia denominado Castello Branco, Lobosco e Gama Advogados ("CBLG Advogados") adota medidas rigorosas de proteção de dados pessoais dos Titulares desse Direito.</p>
           
@@ -198,6 +200,176 @@
           <div class="privacy-footer">
             <p><strong>Publicado em: 27.03.2023</strong></p>
           </div>
+          </template>
+          <template v-else>
+          <h2>I – OUR PURPOSE</h2>
+          <p>The law firm Castello Branco, Lobosco e Gama Advogados ("CBLG Advogados") adopts strict measures to protect the personal data of Data Subjects.</p>
+
+          <p>Your privacy is important to us. It is CBLG Advogados' policy to respect your privacy regarding any information we may collect from you. We only request personal information when we truly need it to provide you with a service. We do so by fair and lawful means, with your knowledge and consent. We also tell you why we are collecting it and how it will be used. We only retain collected information for as long as necessary to provide the requested service. When we store data, we protect it within commercially acceptable means to prevent loss and theft, as well as unauthorized access, disclosure, copying, use or modification. We do not share personally identifiable information publicly or with third parties, except when required by law. Our website may link to external sites that are not operated by us. Please be aware that we have no control over the content and practices of these sites and cannot accept responsibility for their respective privacy policies. You are free to refuse our request for personal information, with the understanding that we may be unable to provide some of the desired services. Your continued use of our website will be regarded as acceptance of our practices regarding privacy and personal information. If you have any questions about how we handle user data and personal information, please contact us.</p>
+
+          <p>Accordingly, we have established this Privacy and Personal Data Protection Policy, which expresses our commitment to processing Personal Data responsibly and ethically, in line with the principles and values that govern the legal profession and, in particular, in accordance with the rules of the Brazilian General Data Protection Law – "LGPD" (Law No. 13,709/2018) and other applicable legislation in force.</p>
+
+          <p>In recognition of the ongoing and dynamic nature of changes in data processing, our firm undertakes to update this Privacy Policy periodically, whenever new privacy and personal data protection procedures are implemented.</p>
+
+          <p>By browsing public or private pages linked to our law firm, the User agrees to the processing of their personal data as described in this Privacy and Personal Data Protection Policy.</p>
+
+          <p>Should you have any questions about this Privacy and Personal Data Protection Policy, please contact us by phone at +55 11 3816-4001 or by email at recepcao@cblg.adv.br.</p>
+
+          <h2>II – FOUNDATIONS</h2>
+          <p>The rules on privacy and the use of cookies, based mainly on Article 2 of the General Data Protection Law, are founded on:</p>
+          <ul>
+            <li>Respect for privacy;</li>
+            <li>Informational self-determination;</li>
+            <li>Freedom of expression, information, communication and opinion;</li>
+            <li>Inviolability of intimacy, honor and image;</li>
+            <li>Economic and technological development and innovation;</li>
+            <li>Free enterprise, free competition and consumer protection; and</li>
+            <li>Human rights, the free development of personality, dignity and the exercise of citizenship by natural persons.</li>
+          </ul>
+
+          <h2>III – GENERAL PROCESSES</h2>
+          <p>This Privacy and Personal Data Protection Policy sets out which personal data we collect, why we collect it, how, where and for how long we store it, and with whom we share it, where sharing occurs.</p>
+
+          <p>This Privacy Policy also defines the rights of Data Subjects regarding their personal data and who may be contacted for further information or clarification on this subject.</p>
+
+          <p>Our processing of personal data is guided by good faith and by the following principles:</p>
+          <ul>
+            <li><strong>Purpose:</strong> processing for legitimate, specific and explicit purposes disclosed to the data subject, with no possibility of further processing in a manner incompatible with those purposes;</li>
+            <li><strong>Adequacy:</strong> compatibility of the processing with the purposes disclosed to the data subject, according to the context of the processing;</li>
+            <li><strong>Necessity:</strong> limitation of processing to the minimum necessary to achieve its purposes, covering data that is relevant, proportionate and not excessive in relation to the purposes of the data processing;</li>
+            <li><strong>Free access:</strong> assurance to data subjects of easy, free-of-charge consultation on the form and duration of the processing, as well as on the completeness of their personal data;</li>
+            <li><strong>Data quality:</strong> assurance to data subjects of the accuracy, clarity, relevance and updating of the data, as necessary and to fulfill the purpose of its processing;</li>
+            <li><strong>Transparency:</strong> assurance to data subjects of clear, accurate and easily accessible information about the processing and the respective processing agents, subject to commercial and industrial secrets;</li>
+            <li><strong>Security:</strong> use of technical and administrative measures capable of protecting personal data from unauthorized access and from accidental or unlawful destruction, loss, alteration, communication or dissemination;</li>
+            <li><strong>Prevention:</strong> adoption of measures to prevent damage arising from the processing of personal data;</li>
+            <li><strong>Non-discrimination:</strong> impossibility of processing for unlawful or abusive discriminatory purposes;</li>
+            <li><strong>Accountability:</strong> demonstration, by the agent, of the adoption of effective measures capable of proving observance of and compliance with personal data protection rules, including the effectiveness of such measures.</li>
+          </ul>
+
+          <h2>IV – HOW PERSONAL DATA IS COLLECTED</h2>
+          <p>CBLG Advogados collects personal data and sensitive personal data (together referred to in this Policy simply as "personal data") in the course of providing services, hiring staff or engaging service providers and the like. Data may therefore be collected from the following sources:</p>
+          <ul>
+            <li><strong>directly from the data subject:</strong> collection of personal data that the Data Subject provides when engaging services, according to the specific purpose of those services, as well as through access to administrative and judicial proceedings to which the data subject is a party;</li>
+            <li><strong>collection when hiring staff;</strong></li>
+            <li><strong>when contracts are signed with service providers and partners, among others;</strong></li>
+            <li><strong>in specific cases, personal data of persons lacking full legal capacity, such as children, adolescents and persons under guardianship or conservatorship, may be collected, as provided by their parents or legal guardians;</strong></li>
+            <li><strong>via interaction through digital means:</strong> through interaction on the CBLG Advogados website or other channels, personal data about the Data Subject may be collected for the provision of services;</li>
+            <li><strong>through third parties:</strong> collection of personal data through partners or suppliers. In this case, CBLG Advogados takes measures to ensure that the privacy and personal data protection rules set out in the LGPD have been complied with, including obtaining consent where necessary;</li>
+            <li><strong>through systems integration:</strong> we share personal data when using case management systems and other corporate systems, always limited to the information necessary for the provision of services.</li>
+          </ul>
+
+          <h2>V – TYPES OF PERSONAL DATA COLLECTED AND HOW THEY ARE USED</h2>
+          <p>During the performance or provision of services, or even while its websites are being browsed, CBLG Advogados may collect certain personal data, such as:</p>
+          <ul>
+            <li><strong>identification data:</strong> name, ID card (RG), taxpayer number (CPF), age, sex, email address, business/residential address, telephone, date of birth, marital status, health plan card number, parentage, contact telephone, health insurance, identity documents (professional council documents, driver's license, passport number and other official documents), photograph and biometrics;</li>
+            <li><strong>financial data:</strong> data necessary for payments to the data subject, including payment in national currency, bank details, among others;</li>
+            <li><strong>browsing data:</strong> login and password for access to workstations, network connections and corporate systems; IP address, browser type and language, access times and all other browsing information generated on machines, systems or connections provided by CBLG Advogados, regardless of content. In addition, and in the interest of transparency, CBLG Advogados notes that it may occasionally collect cookies when its website is accessed, to improve the user experience;</li>
+          </ul>
+
+          <h2>VI – INTERNATIONAL DATA TRANSFER</h2>
+          <p>CBLG Advogados does not rent, sell or release data to third parties for the purpose of enabling any marketing of their services, but informs that your data may be transferred to and kept in environments outside your municipality, state or country, where data protection laws may differ from those in force in Brazil, while ensuring a level of personal data protection consistent with the General Data Protection Law (LGPD).</p>
+
+          <p>CBLG Advogados takes all reasonably necessary measures to ensure that your data is processed reliably, securely and in accordance with this Privacy Policy.</p>
+
+          <h2>VII – LEGAL BASES FOR PROCESSING PERSONAL DATA</h2>
+          <p>Below are the legal bases on which personal data may be processed when CBLG Advogados acts as Controller, applied according to the category of data (personal data or sensitive personal data):</p>
+          <ul>
+            <li>upon consent to access systems, portals and other digital platforms maintained by CBLG Advogados and to receive information about your interests;</li>
+            <li>when there are legitimate interests in processing personal data, such as offering and delivering services, and for the effective and lawful operation of CBLG Advogados, provided that such interests are not overridden by fundamental interests, rights and freedoms;</li>
+            <li>to comply with legal and regulatory obligations that may require the collection, storage and sharing of the Data Subject's personal data and sensitive personal data, such as keeping records for tax purposes or providing information to a public body or authority regulating the laws/activities within the corporate purpose of CBLG Advogados, and complying with obligations to combat corruption, money laundering, fraud and misconduct;</li>
+            <li>to perform a contract, as well as to provide services to the end recipient;</li>
+            <li>for the regular exercise of rights in contracts and in judicial, administrative or arbitration proceedings;</li>
+            <li>to protect the life or physical safety of the data subject;</li>
+            <li>for credit protection; to ensure fraud prevention and security in identification and registration authentication processes in electronic systems;</li>
+            <li>when CBLG Advogados acts as Processor, the legal basis and the manner in which personal data will be processed will be defined by the Controller of the personal data.</li>
+          </ul>
+
+          <h2>VIII – SHARING OF PERSONAL DATA</h2>
+          <p>In the course of operations, Data Subjects' personal data may be shared with:</p>
+          <ul>
+            <li>– competent authorities (including courts and authorities that regulate us);</li>
+            <li>– technology companies that manage integrated systems or are responsible for storing and ensuring security in the processing of personal data;</li>
+            <li>– internally, with areas that need access to personal data to fulfill a legal or regulatory obligation or for the regular exercise of rights.</li>
+          </ul>
+
+          <p>We ensure that any personal data processed will be shared ethically and in line with this Policy.</p>
+
+          <p>Other sharing may take place for lawful purposes, subject to the conditions established by applicable law. For detailed information about the third parties with whom personal data may be shared, the data subject may contact the DPO/Data Protection Officer at the address provided in this Privacy Policy.</p>
+
+          <h2>IX – DATA OF CHILDREN AND ADOLESCENTS</h2>
+          <p>In the course of providing services, CBLG Advogados may collect personal data of children and adolescents and will ensure that processing always takes place in the best interest of the child and adolescent.</p>
+
+          <p>Personal data of children will be processed with the specific consent of at least one parent or legal guardian. For adolescents, processing will take place provided another legal basis authorizing it is present, under the LGPD. In urgent/emergency situations, the child's personal data will be collected and processed immediately to protect the child's life, and one parent or legal guardian will be notified afterwards. The same provisions apply to the personal data of persons under guardianship or conservatorship.</p>
+
+          <h2>X – RETENTION OF PERSONAL DATA</h2>
+          <p>Our firm stores and keeps Users' personal data securely, in compliance with applicable law and for the period necessary or legally permitted, in view of the purposes for which the personal data was collected, as set out in this Privacy and Personal Data Protection Policy.</p>
+
+          <p>The criteria used to determine retention periods include, but are not limited to: (i) the duration of the relationship with the data subject; (ii) while consent remains valid, where applicable; (iii) any legal or regulatory obligation requiring the retention of personal data; (iv) when necessary for relevant activities or services; and (v) to meet applicable limitation periods, as provided by law or regulation.</p>
+
+          <h2>XI – PROTECTION AND SECURITY OF PERSONAL DATA</h2>
+          <p>CBLG Advogados is committed to protecting the privacy and personal data of its Users, Clients, Employees and Third Parties. To this end, it adopts technical and administrative security measures capable of protecting personal data from unauthorized access and from accidental or unlawful destruction, loss, alteration, communication or any form of inappropriate or unlawful processing, including but not limited to:</p>
+          <ul>
+            <li>– limiting access to personal data by employees, service providers and visitors strictly to what is necessary for the purpose of processing the personal data;</li>
+            <li>– using technologies designed to protect personal data during transmission, such as data encryption and adequate security to protect the personal data received.</li>
+          </ul>
+
+          <p>CBLG Advogados applies processes and measures to detect and respond to attempted system breaches. However, no method of transmission over the Internet or method of electronic storage is 100% secure.</p>
+
+          <p>CBLG Advogados takes all precautions necessary and required by the competent authorities, although it cannot guarantee the absolute security of the personal data to which it has access.</p>
+
+          <p>The Internet, as a public forum, is browsed by many, and Users are therefore advised to exercise caution when disclosing information online. With some exceptions, Data Subjects are in the best position to protect themselves in the online environment, by adopting security measures and following specific guidance on creating and safeguarding passwords. Users are therefore responsible for protecting their username and password from third-party access, as well as for choosing secure passwords.</p>
+
+          <h2>XII – THIRD-PARTY PAGES</h2>
+          <p>Through its website, CBLG Advogados may provide links to third-party websites, which are subject to independent Privacy Policies. This Data Privacy and Cookie Use Policy does not necessarily apply to such websites, and our firm is not responsible for how data is processed by such third parties.</p>
+
+          <h2>XIII – USERS' RIGHTS</h2>
+          <p>Users have rights regarding their personal data under the LGPD. To that end, additional transparency information has been made available in the Privacy area to give users free and unrestricted access to these rights. These rights include:</p>
+          <ul>
+            <li>– confirmation that their personal data is being processed;</li>
+            <li>– access to the personal data being processed;</li>
+            <li>– requesting the correction or updating of personal data that is incorrect, incomplete or inaccurate;</li>
+            <li>– requesting that personal data the data subject considers unnecessary, excessive or processed in breach of the LGPD be anonymized, blocked or deleted, provided this is permitted by the laws/regulations related to the corporate purpose of CBLG Advogados;</li>
+            <li>– objecting to the processing of personal data when there is no longer a legitimate or legal need to process it;</li>
+            <li>– requesting the transfer of personal data to another provider;</li>
+            <li>– requesting information about the public and private entities with which their personal data has been shared;</li>
+            <li>– revoking, at any time, consent previously given, requesting the deletion of personal data processed on the basis of that consent, as well as having access to information about the possibility of not providing consent and the consequences of refusal;</li>
+            <li>– requesting a review of personal data processing based on automated decisions.</li>
+          </ul>
+
+          <p>For questions, comments, requests or complaints about the collection or use of personal data or about this Privacy and Personal Data Protection Policy, please contact us by email at recepcao@cblg.adv.br.</p>
+
+          <h2>XIV – SECURITY INCIDENTS THAT MAY POSE A RISK OR RELEVANT HARM TO DATA SUBJECTS</h2>
+          <p>In the event of a security incident that may pose a risk or relevant harm to data subjects, CBLG Advogados undertakes to notify Data Subjects, within a reasonable time, of:</p>
+          <ul>
+            <li>A description of the nature of the personal data affected;</li>
+            <li>Information about the data subjects involved;</li>
+            <li>The technical and security measures used to protect the data, subject to commercial and industrial secrets;</li>
+            <li>The risks related to the incident;</li>
+            <li>The reasons for the delay, if notification was not immediate; and</li>
+            <li>The measures that have been or will be taken to reverse or mitigate the effects of the harm.</li>
+          </ul>
+
+          <h2>XV – COOKIES AND SIMILAR TECHNOLOGIES</h2>
+          <p>CBLG Advogados may receive and store data from its Users through the use of cookies.</p>
+
+          <p>Most browsers are set to accept cookies automatically, although it is possible to configure the browser to refuse all cookies or to indicate when a cookie is being sent. Once a cookie is accepted, on a subsequent visit to our website the web server will recognize the user's computer or mobile device.</p>
+
+          <p>The website may use persistent and session cookies. Persistent cookies can be removed by following the instructions in the help file of the user's web browser.</p>
+
+          <p>The purpose of any use of Cookies by our firm is the statistical analysis of browsing, in order to improve users' browsing experience.</p>
+
+          <h2>XVI – CHANGES TO THIS PRIVACY AND PERSONAL DATA PROTECTION POLICY</h2>
+          <p>The content of this Privacy and Personal Data Protection Policy may be modified at any time. We therefore recommend that Data Subjects review this Policy from time to time to stay informed about how our firm is protecting their information.</p>
+
+          <p>All changes will be communicated through a notice on the website or through any other form of communication with the Data Subject, whenever appropriate and feasible.</p>
+
+          <h2>XVII – COMPLAINTS, QUESTIONS AND/OR REQUESTS</h2>
+          <p>If Data Subjects are not satisfied with the way their personal data is processed, or have any questions, complaints, concerns or requests related to their privacy and the protection of their personal data, they may contact the DPO/Data Protection Officer by sending an email to recepcao@cblg.adv.br</p>
+
+          <div class="privacy-footer">
+            <p><strong>Published on: March 27, 2023</strong></p>
+          </div>
+          </template>
         </div>
       </div>
     </section>
@@ -207,27 +379,27 @@
       <div class="container">
         <div class="footer-content">
           <div class="footer-section">
-            <img src="/logo.png" alt="CBLG Advogados" class="footer-logo">
-            <p>Atuação Integrada e Multidisciplinar</p>
+            <img src="/logo-25-anos-white.png" alt="CBLG Advogados" class="footer-logo">
+            <p>{{ t('footer.tagline') }}</p>
           </div>
           <div class="footer-section">
-            <h4>Links Rápidos</h4>
+            <h4>{{ t('footer.quickLinks') }}</h4>
             <ul>
-              <li><a href="/#sobre">Sobre</a></li>
-              <li><a href="/#equipe">Equipe</a></li>
-              <li><a href="/#areas">Áreas de Atuação</a></li>
-              <li><a href="/blog">Blog</a></li>
+              <li><a href="/#sobre">{{ t('footer.about') }}</a></li>
+              <li><a href="/#equipe">{{ t('footer.team') }}</a></li>
+              <li><a href="/#areas">{{ t('footer.areas') }}</a></li>
+              <li><a href="/blog">{{ t('footer.blog') }}</a></li>
             </ul>
           </div>
           <div class="footer-section">
-            <h4>Informações Legais</h4>
+            <h4>{{ t('footer.legal') }}</h4>
             <ul>
-              <li><a href="/privacy-policy">Política de Privacidade</a></li>
+              <li><a href="/privacy-policy">{{ t('footer.privacy') }}</a></li>
             </ul>
           </div>
         </div>
         <div class="footer-bottom">
-          <p>&copy; 2025 Castello Branco, Lobosco & Gama Advogados. Todos os direitos reservados.</p>
+          <p>&copy; 2025 Castello Branco, Lobosco & Gama Advogados. {{ t('footer.rights') }}</p>
         </div>
       </div>
     </footer>
@@ -236,6 +408,8 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import LanguageToggle from './LanguageToggle.vue'
+import { locale, t } from './i18n.js'
 
 const isScrolled = ref(false)
 const isNavOpen = ref(false)
@@ -523,7 +697,6 @@ onUnmounted(() => {
   width: 100%;
   height: auto;
   margin-bottom: 1rem;
-  filter: brightness(0) invert(1);
   opacity: 0.9;
 }
 
@@ -571,10 +744,6 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .navbar { 
     padding: 0.5rem 0;
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
   }
   
   .nav-container {
