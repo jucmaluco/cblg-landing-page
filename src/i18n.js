@@ -72,7 +72,16 @@ const messages = {
     'rd.previous': 'Anterior',
     'rd.next': 'Próximo',
     'rd.meetingAlt': 'Equipe CBLG em reunião no escritório',
-    'rd.buildingAlt': 'Fachada do edifício do escritório CBLG em São Paulo'
+    'rd.buildingAlt': 'Fachada do edifício do escritório CBLG em São Paulo',
+    'rd.fact.cases.value': '5.000+',
+    'rd.fact.cases.label': 'Processos',
+    'rd.fact.cases.text': 'Sob gestão estratégica e personalizada.',
+    'rd.fact.stability.value': '#2',
+    'rd.fact.stability.label': 'Estabilidade',
+    'rd.fact.stability.text': 'Escritório há mais tempo com a mesma composição societária do país.',
+    'rd.fact.sectors.value': '20+',
+    'rd.fact.sectors.label': 'Setores de atuação',
+    'rd.fact.sectors.text': 'Expertise multidisciplinar em frentes estratégicas.'
   },
   en: {
     'meta.title': 'CBLG Advogados - Legal Excellence',
@@ -141,7 +150,16 @@ const messages = {
     'rd.previous': 'Previous',
     'rd.next': 'Next',
     'rd.meetingAlt': 'CBLG team in a meeting at the office',
-    'rd.buildingAlt': 'Facade of the CBLG office building in São Paulo'
+    'rd.buildingAlt': 'Facade of the CBLG office building in São Paulo',
+    'rd.fact.cases.value': '5,000+',
+    'rd.fact.cases.label': 'Cases',
+    'rd.fact.cases.text': 'Under strategic, personalized management.',
+    'rd.fact.stability.value': '#2',
+    'rd.fact.stability.label': 'Stability',
+    'rd.fact.stability.text': 'The firm with the longest-standing unchanged partnership in the country.',
+    'rd.fact.sectors.value': '20+',
+    'rd.fact.sectors.label': 'Practice sectors',
+    'rd.fact.sectors.text': 'Multidisciplinary expertise across strategic fronts.'
   }
 }
 
