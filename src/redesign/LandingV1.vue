@@ -109,22 +109,37 @@
         <div class="v1-container">
           <div class="v1-mark" v-reveal></div>
           <h2 class="v1-h2" v-reveal>{{ t('footer.team') }}</h2>
-          <ul class="v1-team__grid">
-            <li
-              v-for="(member, index) in team"
-              :key="member.nome"
-              v-reveal
-              :style="{ '--delay': `${(index % 5) * 70}ms` }"
+          <div class="v1-team__carousel" v-reveal>
+            <button
+              type="button"
+              class="v1-team__arrow"
+              :aria-label="t('rd.previous')"
+              :disabled="teamAtStart"
+              @click="slideTeam(-1)"
             >
-              <button type="button" class="v1-member" @click="activeMember = member">
-                <span class="v1-member__photo">
-                  <img :src="member.retrato || member.foto" :alt="member.nome" loading="lazy">
-                </span>
-                <span class="v1-member__name">{{ member.nome }}</span>
-                <span class="v1-member__cta">{{ t('rd.viewProfile') }}</span>
-              </button>
-            </li>
-          </ul>
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <ul ref="teamTrack" class="v1-team__track" @scroll.passive="updateTeamTrack">
+              <li v-for="member in team" :key="member.nome" class="v1-team__item">
+                <button type="button" class="v1-member" @click="activeMember = member">
+                  <span class="v1-member__photo">
+                    <img :src="member.retrato || member.foto" :alt="member.nome" loading="lazy">
+                  </span>
+                  <span class="v1-member__name">{{ member.nome }}</span>
+                  <span class="v1-member__cta">{{ t('rd.viewProfile') }}</span>
+                </button>
+              </li>
+            </ul>
+            <button
+              type="button"
+              class="v1-team__arrow"
+              :aria-label="t('rd.next')"
+              :disabled="teamAtEnd"
+              @click="slideTeam(1)"
+            >
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -349,7 +364,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import LanguageToggle from '../LanguageToggle.vue'
 import { t, localized, formatDate } from '../i18n.js'
 import { team, practiceAreas, offices, socialLinks } from '../content.js'
@@ -397,6 +412,34 @@ useEscape(() => {
   activeMember.value = null
   activePost.value = null
 })
+
+// Team carousel
+const teamTrack = ref(null)
+const teamAtStart = ref(true)
+const teamAtEnd = ref(false)
+
+const updateTeamTrack = () => {
+  const el = teamTrack.value
+  if (!el) return
+  const maxScroll = el.scrollWidth - el.clientWidth
+  teamAtStart.value = el.scrollLeft <= 4
+  teamAtEnd.value = el.scrollLeft >= maxScroll - 4
+}
+
+const slideTeam = (direction) => {
+  const el = teamTrack.value
+  if (!el) return
+  const item = el.querySelector('.v1-team__item')
+  const gap = parseFloat(getComputedStyle(el).columnGap) || 0
+  const step = item ? item.getBoundingClientRect().width + gap : el.clientWidth
+  el.scrollBy({ left: direction * step, behavior: 'smooth' })
+}
+
+onMounted(() => {
+  updateTeamTrack()
+  window.addEventListener('resize', updateTeamTrack)
+})
+onUnmounted(() => window.removeEventListener('resize', updateTeamTrack))
 
 const go = (id) => {
   menuOpen.value = false
@@ -482,8 +525,8 @@ const go = (id) => {
 }
 
 .v1-section {
-  padding-block: clamp(96px, 12vw, 168px);
-  scroll-margin-top: 40px;
+  padding-block: clamp(48px, 5.5vw, 76px);
+  scroll-margin-top: 64px;
 }
 
 /* Reveal on scroll */
@@ -965,7 +1008,7 @@ const go = (id) => {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   column-gap: clamp(20px, 3vw, 40px);
-  row-gap: clamp(72px, 9vw, 120px);
+  row-gap: clamp(36px, 4.5vw, 56px);
   align-items: center;
 }
 
@@ -1008,7 +1051,7 @@ const go = (id) => {
 }
 
 .v1-fact {
-  padding: 36px 0 0;
+  padding: 28px 0 0;
 }
 
 .v1-fact + .v1-fact {
@@ -1051,11 +1094,55 @@ const go = (id) => {
   background: var(--paper-2);
 }
 
-.v1-team__grid {
+.v1-team__carousel {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 48px clamp(16px, 2vw, 28px);
-  margin-top: clamp(56px, 7vw, 88px);
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: clamp(12px, 2vw, 24px);
+  margin-top: clamp(28px, 3.5vw, 44px);
+}
+
+.v1-team__track {
+  --cards: 4;
+  --gap: clamp(16px, 2vw, 28px);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--cards) - 1) * var(--gap)) / var(--cards));
+  gap: var(--gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.v1-team__track::-webkit-scrollbar {
+  display: none;
+}
+
+.v1-team__item {
+  scroll-snap-align: start;
+}
+
+.v1-team__arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 72px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font-size: 0.8rem;
+  color: var(--ink);
+  transition: border-color 0.4s var(--ease), color 0.4s var(--ease), opacity 0.4s;
+}
+
+.v1-team__arrow:hover:not(:disabled) {
+  border-color: var(--gold);
+  color: var(--gold-ink);
+}
+
+.v1-team__arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
 }
 
 .v1-member {
@@ -1143,7 +1230,7 @@ const go = (id) => {
   align-items: flex-end;
   justify-content: space-between;
   gap: 32px;
-  margin-bottom: clamp(48px, 6vw, 80px);
+  margin-bottom: clamp(28px, 3.5vw, 44px);
 }
 
 .v1-areas__count {
@@ -1273,7 +1360,7 @@ const go = (id) => {
   align-items: flex-end;
   justify-content: space-between;
   gap: 32px;
-  margin-bottom: clamp(48px, 6vw, 80px);
+  margin-bottom: clamp(28px, 3.5vw, 44px);
 }
 
 .v1-news__grid {
@@ -1383,7 +1470,7 @@ const go = (id) => {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   column-gap: clamp(20px, 3vw, 40px);
-  row-gap: 64px;
+  row-gap: 36px;
 }
 
 .v1-contact__intro {
@@ -1391,7 +1478,7 @@ const go = (id) => {
 }
 
 .v1-contact__figure {
-  margin-top: 56px;
+  margin-top: 32px;
 }
 
 .v1-contact__figure img {
@@ -1407,7 +1494,7 @@ const go = (id) => {
 }
 
 .v1-office {
-  padding: 36px 0;
+  padding: 26px 0;
   border-top: 1px solid var(--line-light);
 }
 
@@ -1812,8 +1899,8 @@ const go = (id) => {
 
 /* Responsive */
 @media (max-width: 1100px) {
-  .v1-team__grid {
-    grid-template-columns: repeat(4, 1fr);
+  .v1-team__track {
+    --cards: 3;
   }
 }
 
@@ -1839,10 +1926,6 @@ const go = (id) => {
 
   .v1-about__figure {
     margin-right: 24px;
-  }
-
-  .v1-team__grid {
-    grid-template-columns: repeat(3, 1fr);
   }
 
   .v1-news__grid {
@@ -1896,9 +1979,21 @@ const go = (id) => {
     margin-top: 28px;
   }
 
-  .v1-team__grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 36px 16px;
+  /* Swipe instead of arrows, full-bleed like the original site */
+  .v1-team__carousel {
+    grid-template-columns: minmax(0, 1fr);
+    margin-inline: calc(-1 * clamp(20px, 5vw, 64px));
+  }
+
+  .v1-team__arrow {
+    display: none;
+  }
+
+  .v1-team__track {
+    --gap: 12px;
+    grid-auto-columns: 44vw;
+    padding-inline: clamp(20px, 5vw, 64px);
+    scroll-padding-inline: clamp(20px, 5vw, 64px);
   }
 
   .v1-member__name {
