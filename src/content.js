@@ -4,6 +4,8 @@ export const team = [
   {
     nome: 'André Castello Branco Colotto',
     foto: '/foto_andré_castello_branco.jpg',
+    // Same photo on the shared studio backdrop, used by the redesign
+    retrato: '/equipe/andre-castello-branco-colotto.jpg',
     bio: `Especialista em Direito Societário, André atua na mediação de conflitos empresariais, negociações estratégicas e consultoria jurídica voltada ao planejamento e à estruturação societária e de negócios. Sua prática combina visão jurídica e estratégia empresarial, assessorando companhias e seus sócios em processos de reorganização, estruturação de governança e resolução de disputas societárias.
 
 Destaca-se por sua excelência na elaboração e revisão de contratos, acordos de quotistas e instrumentos de investimento, buscando soluções equilibradas e sustentáveis. Com perfil conciliador, foca na prevenção de litígios, conduzindo mediações e negociações complexas para a construção de acordos duradouros e alinhados aos interesses das partes.
@@ -32,6 +34,8 @@ André also has experience as a Fiscal Council member, adding value to corporate
   {
     nome: 'Alexandre Lobosco',
     foto: '/foto_alexandre_lobosco.jpg',
+    // Same photo on the shared studio backdrop, used by the redesign
+    retrato: '/equipe/alexandre-lobosco.jpg',
     bio: `Atua nas áreas de Direito Tributário — consultivo e contencioso —, Direito Societário e Planejamento Patrimonial e Sucessório. No campo tributário, assessora empresas e grupos econômicos em planejamento fiscal, reorganizações societárias com impactos tributários, defesa em litígios administrativos e judiciais e implementação de programas de compliance tributário.
 
 Possui também ampla experiência em operações conexas ao Direito Imobiliário, especialmente na estruturação de aquisições, incorporações e desenvolvimento de empreendimentos sob a ótica tributária, incluindo a análise e otimização de seus reflexos fiscais.
@@ -68,6 +72,8 @@ Combines a solid academic background with a practice grounded in technical preci
   {
     nome: 'Rodrigo Gama Dantas',
     foto: '/foto_rodrigo_gama_dantas.jpg',
+    // Same photo on the shared studio backdrop, used by the redesign
+    retrato: '/equipe/rodrigo-gama-dantas.jpg',
     bio: `Responsável pelo contencioso cível e empresarial do escritório, Rodrigo Gama possui ampla experiência em litígios que tramitam tanto no Poder Judiciário quanto em Câmaras Arbitrais, tendo atuado na defesa de clientes de diversos setores da economia — como imobiliário, saúde, segurança patrimonial, educação, obras e saneamento, entre outros.
 
 Sua atuação destaca-se pela condução estratégica de disputas complexas e pela elaboração de soluções processuais criativas e personalizadas. Com especialização em mediação, desenvolve trabalho voltado à gestão eficiente de conflitos empresariais e contratuais, priorizando a prevenção de controvérsias e a obtenção de resultados jurídicos consistentes e sustentáveis.
@@ -92,6 +98,8 @@ Combining technical skill and pragmatism, Rodrigo advises Brazilian and foreign 
   {
     nome: 'Marcelo Ferreira de Oliveira',
     foto: '/marcelo_freitas.jpeg',
+    // Same photo on the shared studio backdrop, used by the redesign
+    retrato: '/equipe/marcelo-ferreira-de-oliveira.jpg',
     bio: `Advogado com atuação predominante em direito de família e das sucessões, além de ampla experiência em contencioso cível e imobiliário de alta complexidade.
 
 Atua na condução de disputas e negociações patrimoniais relevantes, que envolvem desde partilhas e inventários até litígios contratuais e de responsabilidade civil.
@@ -118,6 +126,8 @@ Author of a book and of articles on literature and literary criticism, Marcelo b
   {
     nome: 'Marcia Leardini',
     foto: '/foto_marcia_leardini.jpg',
+    // Same photo on the shared studio backdrop, used by the redesign
+    retrato: '/equipe/marcia-leardini.jpg',
     bio: `Advogada com ampla experiência nas áreas criminal e de compliance. Mestre em Direito Empresarial, com foco de pesquisa em direito penal econômico.
 
 Professora nas disciplinas de Direito Penal, Processual Penal, Compliance e Proteção de Privacidade na graduação e pós-graduação da Unicuritiba e da FAE Business School.
@@ -142,6 +152,8 @@ Chairs the Women Criminal Defense Lawyers Committee of the Paraná Association o
   {
     nome: 'Michelle Gironda Cabrera',
     foto: '/Michelle_Gironda_Cabrera.jpg',
+    // Same photo on the shared studio backdrop, used by the redesign
+    retrato: '/equipe/michelle-gironda-cabrera.jpg',
     bio: `Advogada criminalista e diretora do núcleo criminal do CBLG Advogados. Doutora em Direito Socioeconômico e Desenvolvimento pela Pontifícia Universidade Católica do Paraná.
 
 Professora de Direito Processual Penal e Penal no Centro Universitário Curitiba e na Faculdade de Pinhais, além de coordenadora do curso de pós-graduação em Ciências Criminais da UniFapi.
@@ -174,6 +186,8 @@ Also teaches at the Escola Paranaense de Direito, the São Paulo State Public De
   {
     nome: 'Ana Celia Guarnieri',
     foto: '/ana_celia_foto.jpg',
+    // Same photo on the shared studio backdrop, used by the redesign
+    retrato: '/equipe/ana-celia-guarnieri.jpg',
     bio: `Advogada com atuação nas áreas cível, empresarial e societária, e sólida expertise em direito imobiliário. Sua trajetória combina visão estratégica, profundidade técnica e experiência relevante tanto na iniciativa privada quanto no setor público.
 
 Participou da coordenação e elaboração de planos de governo em diferentes esferas — Federal, Estadual e Municipal, incluindo São Paulo e Rio de Janeiro — conduzindo pesquisas estratégicas e programas de capacitação em temas centrais da administração pública.
@@ -204,6 +218,8 @@ In the United States, worked as an advocacy and public policy consultant for the
   {
     nome: 'Miguel Barbado Neto',
     foto: '/foto_miguel_barbado_neto.png',
+    // Same photo on the shared studio backdrop, used by the redesign
+    retrato: '/equipe/miguel-barbado-neto.jpg',
     bio: `Especialista em Direito Tributário, Miguel Barbado Neto atua em litígios judiciais e administrativos envolvendo tributos federais, estaduais e municipais.
 
 Possui experiência em consultoria tributária e operações de compra e venda de imóveis urbanos e rurais, assessorando clientes na estruturação de negócios seguros e eficientes sob a ótica fiscal.
@@ -228,6 +244,8 @@ Recognized for technical, meticulous work focused on legal certainty, Miguel has
   {
     nome: 'Karina de Lara Lima',
     foto: '/karina_foto.jpeg',
+    // Same photo on the shared studio backdrop, used by the redesign
+    retrato: '/equipe/karina-de-lara-lima.jpg',
     bio: `Advogada com sólida trajetória na área Cível, atuando especialmente em demandas indenizatórias e consumeristas.
 
 Especialista em Direito de Família e Sucessões, conduz seus casos com sensibilidade, técnica e foco em soluções jurídicas eficazes, conciliando empatia com precisão técnica.
@@ -256,6 +274,8 @@ Takes an active part in committees of the São Paulo Bar Association (OAB/SP) an
   {
     nome: 'Giselle Seabra Fontainha',
     foto: '/giselle.jpeg',
+    // Same photo on the shared studio backdrop, used by the redesign
+    retrato: '/equipe/giselle-seabra-fontainha.jpg',
     bio: `Advogada com atuação nas áreas de Direito Administrativo, contratos públicos, Direito Regulatório, Direito da Saúde e Direito do Consumidor. Presta consultoria jurídica a empresas, entidades e particulares em matérias que envolvem a Administração Pública, setores regulados e relações de consumo.
 
 Possui ampla experiência na análise e estruturação de contratos públicos, licitações, processos administrativos e demais questões relacionadas ao relacionamento com órgãos e entidades governamentais.

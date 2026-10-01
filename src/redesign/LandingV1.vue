@@ -46,7 +46,6 @@
             :style="{ '--i': index }"
             @click.prevent="go(item.id)"
           >
-            <span class="v1-menu__num">{{ ROMAN[index] }}</span>
             {{ t(item.label) }}
           </a>
         </nav>
@@ -86,18 +85,20 @@
       <section id="sobre" class="v1-section v1-about">
         <div class="v1-container v1-about__grid">
           <div class="v1-about__text">
-            <div class="v1-mark" v-reveal><span>I</span></div>
-            <h2 class="v1-h2" v-reveal>{{ t('footer.about') }}</h2>
-            <p class="v1-about__statement" v-reveal>{{ t('footer.tagline') }}</p>
+            <div class="v1-mark" v-reveal></div>
+            <h2 class="v1-h2 v1-about__title" v-reveal>{{ t('footer.tagline') }}</h2>
             <p class="v1-body" v-reveal>{{ t('about.body') }}</p>
           </div>
           <figure class="v1-about__figure" v-reveal>
             <img src="/foto_mesa.png" :alt="t('rd.meetingAlt')" loading="lazy">
           </figure>
           <dl class="v1-facts">
-            <div v-for="fact in facts" :key="fact.label" class="v1-fact" v-reveal>
-              <dt>{{ fact.value }}</dt>
-              <dd>{{ t(fact.label) }}</dd>
+            <div v-for="fact in facts" :key="fact" class="v1-fact" v-reveal>
+              <dt>{{ t(`rd.fact.${fact}.value`) }}</dt>
+              <dd>
+                <span class="v1-fact__label">{{ t(`rd.fact.${fact}.label`) }}</span>
+                <span class="v1-fact__text">{{ t(`rd.fact.${fact}.text`) }}</span>
+              </dd>
             </div>
           </dl>
         </div>
@@ -106,7 +107,7 @@
       <!-- II. Equipe -->
       <section id="equipe" class="v1-section v1-team">
         <div class="v1-container">
-          <div class="v1-mark" v-reveal><span>II</span></div>
+          <div class="v1-mark" v-reveal></div>
           <h2 class="v1-h2" v-reveal>{{ t('footer.team') }}</h2>
           <ul class="v1-team__grid">
             <li
@@ -117,7 +118,7 @@
             >
               <button type="button" class="v1-member" @click="activeMember = member">
                 <span class="v1-member__photo">
-                  <img :src="member.foto" :alt="member.nome" loading="lazy">
+                  <img :src="member.retrato || member.foto" :alt="member.nome" loading="lazy">
                 </span>
                 <span class="v1-member__name">{{ member.nome }}</span>
                 <span class="v1-member__cta">{{ t('rd.viewProfile') }}</span>
@@ -132,7 +133,7 @@
         <div class="v1-container">
           <div class="v1-areas__head">
             <div>
-              <div class="v1-mark v1-mark--light" v-reveal><span>III</span></div>
+              <div class="v1-mark v1-mark--light" v-reveal></div>
               <h2 class="v1-h2 v1-h2--light" v-reveal>{{ t('footer.areas') }}</h2>
             </div>
             <p class="v1-areas__count" v-reveal>
@@ -176,7 +177,7 @@
         <div class="v1-container">
           <div class="v1-news__head">
             <div>
-              <div class="v1-mark" v-reveal><span>IV</span></div>
+              <div class="v1-mark" v-reveal></div>
               <h2 class="v1-h2" v-reveal>{{ t('rd.news') }}</h2>
             </div>
             <a href="/blog" class="v1-textlink" v-reveal>{{ t('rd.viewAll') }}</a>
@@ -215,7 +216,7 @@
       <section id="contato" class="v1-section v1-contact">
         <div class="v1-container v1-contact__grid">
           <div class="v1-contact__intro">
-            <div class="v1-mark v1-mark--light" v-reveal><span>V</span></div>
+            <div class="v1-mark v1-mark--light" v-reveal></div>
             <h2 class="v1-h2 v1-h2--light" v-reveal>{{ t('rd.contact') }}</h2>
             <figure class="v1-contact__figure" v-reveal>
               <img src="/foto_itens_cblg.jpeg" :alt="t('contact.imageAlt')" loading="lazy">
@@ -283,7 +284,7 @@
         <article class="v1-drawer__panel">
           <button type="button" class="v1-close" @click="activeMember = null">{{ t('rd.close') }}</button>
           <header class="v1-drawer__head">
-            <img :src="activeMember.foto" :alt="activeMember.nome" class="v1-drawer__photo">
+            <img :src="activeMember.retrato || activeMember.foto" :alt="activeMember.nome" class="v1-drawer__photo">
             <div>
               <p class="v1-eyebrow">CBLG Advogados</p>
               <h3 class="v1-drawer__name">{{ activeMember.nome }}</h3>
@@ -372,8 +373,6 @@ import {
 loadFonts('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap')
 usePageBackground('#092335')
 
-const ROMAN = ['I', 'II', 'III', 'IV', 'V']
-
 const navItems = [
   { id: 'sobre', label: 'footer.about' },
   { id: 'equipe', label: 'footer.team' },
@@ -382,11 +381,7 @@ const navItems = [
   { id: 'contato', label: 'rd.contact' }
 ]
 
-const facts = [
-  { value: '25', label: 'rd.years' },
-  { value: pad(practiceAreas.length), label: 'rd.areasCount' },
-  { value: pad(offices.length), label: 'rd.officesCount' }
-]
+const facts = ['cases', 'stability', 'sectors']
 
 const scrolled = useScrolled()
 const menuOpen = ref(false)
@@ -531,16 +526,8 @@ const go = (id) => {
 .v1-mark {
   display: flex;
   align-items: center;
-  gap: 18px;
   margin-bottom: 22px;
   color: var(--gold-ink);
-}
-
-.v1-mark span {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 1.35rem;
-  line-height: 1;
 }
 
 .v1-mark::after {
@@ -691,7 +678,7 @@ const go = (id) => {
 
 .v1-nav {
   display: flex;
-  gap: clamp(20px, 2.6vw, 40px);
+  gap: clamp(14px, 1.5vw, 22px);
   margin-left: auto;
 }
 
@@ -804,24 +791,16 @@ const go = (id) => {
 .v1-menu__link {
   display: flex;
   align-items: baseline;
-  gap: 20px;
-  padding: 16px 0;
+  padding: 7px 0;
   border-bottom: 1px solid var(--line-light);
   font-family: var(--serif);
-  font-size: clamp(2rem, 8vw, 2.8rem);
+  font-size: clamp(1.6rem, 6.4vw, 2.1rem);
   line-height: 1.1;
   color: var(--paper);
   opacity: 0;
   transform: translateY(12px);
   animation: v1-menu-in 0.7s var(--ease) forwards;
   animation-delay: calc(80ms + var(--i) * 60ms);
-}
-
-.v1-menu__num {
-  width: 36px;
-  font-size: 1rem;
-  font-style: italic;
-  color: var(--gold);
 }
 
 .v1-menu__foot {
@@ -994,13 +973,10 @@ const go = (id) => {
   grid-column: 1 / span 5;
 }
 
-.v1-about__statement {
-  margin: 40px 0 28px;
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
-  line-height: 1.25;
-  color: var(--gold-ink);
+.v1-about__title {
+  margin-bottom: 32px;
+  font-size: clamp(2.4rem, 4.2vw, 3.6rem);
+  line-height: 1.05;
 }
 
 .v1-about__figure {
@@ -1049,12 +1025,25 @@ const go = (id) => {
 }
 
 .v1-fact dd {
-  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.v1-fact__label {
   font-size: 0.7rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--gold-ink);
+}
+
+.v1-fact__text {
+  max-width: 26ch;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--muted);
 }
 
 /* Team */
