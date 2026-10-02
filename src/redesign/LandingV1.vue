@@ -151,10 +151,6 @@
               <div class="v1-mark v1-mark--light" v-reveal></div>
               <h2 class="v1-h2 v1-h2--light" v-reveal>{{ t('footer.areas') }}</h2>
             </div>
-            <p class="v1-areas__count" v-reveal>
-              <span>{{ pad(practiceAreas.length) }}</span>
-              {{ t('rd.areasCount') }}
-            </p>
           </div>
 
           <ol class="v1-areas__list">
@@ -1231,24 +1227,6 @@ const go = (id) => {
   justify-content: space-between;
   gap: 32px;
   margin-bottom: clamp(28px, 3.5vw, 44px);
-}
-
-.v1-areas__count {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: rgba(247, 243, 236, 0.6);
-}
-
-.v1-areas__count span {
-  font-family: var(--serif);
-  font-size: 2.6rem;
-  letter-spacing: 0;
-  color: var(--gold);
 }
 
 .v1-areas__list {

@@ -402,7 +402,7 @@ export const offices = [
   {
     key: 'contact.curitiba',
     city: 'Curitiba',
-    lines: ['R. Francisco Rocha, 62 - conj.703', '80420-130 - Batel - Curitiba - PR'],
+    lines: ['R. Francisco Rocha, 62 - conjunto 703', '80420-130 - Batel - Curitiba - PR'],
     phone: '+55 (11) 3817-4001'
   },
   {

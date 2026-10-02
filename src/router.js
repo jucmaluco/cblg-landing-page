@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import LandingPage from './landingpage.vue'
+import LandingV1 from './redesign/LandingV1.vue'
 import BlogPage from './BlogPage.vue'
 import PrivacyPolicy from './PrivacyPolicy.vue'
 
@@ -7,7 +7,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: LandingPage
+    component: LandingV1
   },
   {
     path: '/blog',
@@ -19,11 +19,11 @@ const routes = [
     name: 'PrivacyPolicy',
     component: PrivacyPolicy
   },
-  // Redesign candidates for review in staging; lazy-loaded so the current site stays unaffected
+  // Previous home page and the alternative redesign, kept for reference; lazy-loaded
   {
     path: '/v1',
     name: 'HomeV1',
-    component: () => import('./redesign/LandingV1.vue')
+    component: () => import('./landingpage.vue')
   },
   {
     path: '/v2',
